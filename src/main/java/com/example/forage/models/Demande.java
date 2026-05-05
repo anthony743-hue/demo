@@ -22,24 +22,28 @@ public class Demande {
     @Column(nullable = false, length = 30)
     private String fokontany;
     
-    @Column(nullable = false, length = 50)
-    private String nomClient;
+    @Column(name = "nomclient", nullable = false, length = 50)
+    private String nomclient;
     
     @ManyToOne
-    @JoinColumn(name = "idStatus", nullable = false)
+    @JoinColumn(name = "idstatus", nullable = false)
     private Status status;
     
     // Constructors
     public Demande() {}
     
-    public Demande(String region, String district, String commune, String fokontany, 
-                   String nomClient, Status status) {
-        this.region = region;
-        this.district = district;
-        this.commune = commune;
-        this.fokontany = fokontany;
-        this.nomClient = nomClient;
-        this.status = status;
+    // public Demande(String region, String district, String commune, String fokontany, 
+    //                String nomClient, Status status) {
+    //     this.region = region;
+    //     this.district = district;
+    //     this.commune = commune;
+    //     this.fokontany = fokontany;
+    //     this.NomClient = nomClient;
+    //     this.status = status;
+    // }
+
+    public String getLocalisation(){
+        return String.format("%s - %s - %s - %s",region,district,commune,fokontany);
     }
     
     // Getters and Setters
@@ -84,11 +88,11 @@ public class Demande {
     }
     
     public String getNomClient() {
-        return nomClient;
+        return nomclient;
     }
     
-    public void setNomClient(String nomClient) {
-        this.nomClient = nomClient;
+    public void setNomClient(String NomClient) {
+        this.nomclient = NomClient;
     }
     
     public Status getStatus() {

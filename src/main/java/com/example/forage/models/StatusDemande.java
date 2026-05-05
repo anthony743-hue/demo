@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Status_Demande")
+@Table(name = "status_Demande")
 public class StatusDemande {
     
     @Id
@@ -12,11 +12,11 @@ public class StatusDemande {
     private Integer id;
     
     @ManyToOne
-    @JoinColumn(name = "idStatus", nullable = false)
+    @JoinColumn(name = "idstatus", nullable = false)
     private Status status;
     
     @ManyToOne
-    @JoinColumn(name = "idDemande", nullable = false)
+    @JoinColumn(name = "iddemande", nullable = false)
     private Demande demande;
     
     @Column(nullable = false)
@@ -27,6 +27,7 @@ public class StatusDemande {
 
     public StatusDemande(Demande d, LocalDateTime datyTime){
         setStatus(d.getStatus());
+        setDemande(d);
         setDaty(datyTime);
     }
 

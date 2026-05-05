@@ -16,9 +16,13 @@ import com.example.forage.service.StatusService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@RequestMapping("/demande")
+
+
 @Controller
+@RequestMapping("/demande")
 public class DemandeController {
     private StatusDemandeService stdService;
     private StatusService statusService;
@@ -30,19 +34,52 @@ public class DemandeController {
         this.dmdService = dmdService;
     }
 
-    @GetMapping("add")
+    @GetMapping("/add")
     public ModelAndView insertDemande(){
         ModelAndView model = new ModelAndView("demande/insert");
         List<Status> lsStatus = statusService.findAll();
         model.addObject("listeStatus", lsStatus);
+        model.addObject("path", "add");
+        model.addObject("action", "Enregistrer la demande");
         return model;
     }    
     
-    @PostMapping("add")
+    @PostMapping("/add")
     public String saveDemande(Demande demande){
         StatusDemande std = new StatusDemande(demande, LocalDateTime.now());
         dmdService.insert(demande);
         stdService.insert(std);
-        return "redirrect:/add";
+        return "redirect:/demande/add";
+    }
+
+    @GetMapping("/update")
+    public ModelAndView getMethodName(@RequestParam Integer id) {
+        ModelAndView model = new ModelAndView("demande/insert");
+        List<Status> lsStatus = statusService.findAll();
+        Demande d = dmdService.findById(id);
+        model.addObject("listeStatus", lsStatus);
+        model.addObject("dmd", d);
+        model.addObject("path", "update");
+        model.addObject("action", "Modifier la demande");
+        return model;
+    }
+
+    @PostMapping("/update")
+    public String postMethodName(Demande demande) {
+        return "redirect:/demande/list";
+    }
+    
+    @GetMapping("/list")
+    public ModelAndView getList() {
+        ModelAndView model = new ModelAndView("demande/list");
+        List<Demande> ls = dmdService.getAll();
+        model.addObject("listDemande", ls);
+        return model;
+    }
+    
+    @GetMapping("/remove")
+    public String remove(@RequestParam Integer id){
+        dmdService.remove(id);
+        return "redirect:/demande/list";
     }
 }

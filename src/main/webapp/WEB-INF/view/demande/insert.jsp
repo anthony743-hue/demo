@@ -9,13 +9,11 @@
 </head>
 <body>
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="progress" id="progressBar" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        <div class="col-md-4 p-4" id="infoPerso">
+        <div class="progress mb-3" id="progressBar" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                 <div class="progress-bar" style="width: 0%"></div>
             </div>
-        </div>
-        <div class="col-md-8" id="infoPerso">
-            <form id="formPerso">
+            <form id="formPerso" action="<c:url value='/demande/${path}' />" method="post">
                 <div class="form-floating mb-3">
                     <input type="text" name="nomClient" class="form-control" id="floatingInput" placeholder="Jean Richard">
                     <label for="floatingInput">Nom du Client</label>
@@ -28,30 +26,31 @@
                     </select>
                     <label for="floatingSelect">Status</label>
                 </div>
-                <button type="submit" id="nextStep">Suivant</button>
+                <div class="form-floating mb-3">
+                    <input type="text" name="region" class="form-control" id="floatingInput4" placeholder="Jean Richard">
+                    <label for="floatingInput4">Region</label>
+                </div>
+                 <div class="form-floating mb-3">
+                    <input type="text" name="district" class="form-control" id="floatingInput1" placeholder="Jean Richard">
+                    <label for="floatingInput1">District</label>
+                </div>
+                 <div class="form-floating mb-3">
+                    <input type="text" name="commune" class="form-control" id="floatingInput2" placeholder="Jean Richard">
+                    <label for="floatingInput2">Commune</label>
+                </div>
+                 <div class="form-floating mb-3">
+                    <input type="text" name="fokontany" class="form-control" id="floatingInput3" placeholder="Jean Richard">
+                    <label for="floatingInput3">Fokontany</label>
+                </div>
+                <button type="submit" id="nextStep" class="btn btn-primary w-100" >${action}</button>
             </form>
         </div>
-        <div class="col-md-8" id="infoLocal" style="display: none;">
+        <%-- <div class="col-md-8" id="infoLocal" style="display: none;">
             <form id="FormLocal">
-                 <div class="form-floating mb-3">
-                    <input type="text" name="region" class="form-control" id="floatingInput" placeholder="Jean Richard">
-                    <label for="floatingInput">Region</label>
-                </div>
-                 <div class="form-floating mb-3">
-                    <input type="text" name="district" class="form-control" id="floatingInput" placeholder="Jean Richard">
-                    <label for="floatingInput">District</label>
-                </div>
-                 <div class="form-floating mb-3">
-                    <input type="text" name="commune" class="form-control" id="floatingInput" placeholder="Jean Richard">
-                    <label for="floatingInput">Commune</label>
-                </div>
-                 <div class="form-floating mb-3">
-                    <input type="text" name="fokontany" class="form-control" id="floatingInput" placeholder="Jean Richard">
-                    <label for="floatingInput">Fokontany</label>
-                </div>
+                 
                 <button type="submit" id="sbtButton" >Enregistrer la demande</button>
             </form>
-        </div>
+        </div> --%>
     </div>
     <script src="<c:url value='/assets/bootstrap/js/bootstrap.bundle.min.js' />"></script>
 </body>
