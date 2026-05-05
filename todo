@@ -1,0 +1,24 @@
+Demande 
+	Donnees :
+		Region
+		Commune
+		Fokontany
+		District
+	Nom du client
+	Status
+	Reference (Num d'Id Unique)
+	
+Status  (stockage status des demandes) (Commence/Suspendu)
+	id
+	Designation
+
+Status Demande (Historique des status du demande)
+	idStatus
+	idDemande
+	Date (Debut) DateTime
+
+Fonctionnalies :
+	- liste
+	- recherche
+	- modifier
+	- suppresion
