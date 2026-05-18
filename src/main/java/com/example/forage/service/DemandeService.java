@@ -28,4 +28,8 @@ public class DemandeService {
     public Demande findById(Integer id){
         return repo.findById(id).orElseThrow();
     }
+
+    public Demande findByReference(String reference) throws Exception {
+        return repo.findByReference(reference).get();
+    }
 }

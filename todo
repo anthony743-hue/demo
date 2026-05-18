@@ -22,3 +22,24 @@ Fonctionnalies :
 	- recherche
 	- modifier
 	- suppresion
+
+Creation de devis
+	Designation
+	Quantite
+	PU
+	montant
+	Description
+
+	Interface pour entrer les details
+
+
+
+Creer une fonction getByReference
+	pour recuperer la premiere demande ayant une reference egal a celle-ci
+
+Creer une fonction transactionnelle
+	pour inserer le devis
+	pour inserer un batch de devisDetail
+
+
+Creer une fonction pour recuperer les status 

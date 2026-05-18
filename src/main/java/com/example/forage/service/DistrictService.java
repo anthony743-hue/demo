@@ -1,0 +1,8 @@
+package com.example.forage.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class DistrictService {
+    
+}

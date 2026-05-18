@@ -1,0 +1,43 @@
+
+# Coté Metier 
+## Table a creer:
+dans Tables.sql
+
+### Client
+    - IdClient
+    - Nom
+    - Adresse (varchar)
+    - Contact (varchar)
+
+### Demande
+    - IdDemande
+    - IdClient 
+    - Reference  (varchar)
+    - Commune 
+    - lieu (varchar)
+    - DateHeure 
+
+### Statut
+    - IdStatut
+    - Nom
+
+### Region
+    - IdRegion
+    - Nom
+
+### District
+    - IdDistrict
+    - IdRegion
+    - Nom
+
+### Commune
+    - ID
+    - IdDistrict
+    - Nom
+
+### StatutDemande
+    - IdStatutDemande
+    - IdDemande
+    - IdStatut
+    - DateHeure
+

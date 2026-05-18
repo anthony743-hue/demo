@@ -1,6 +1,8 @@
 package com.example.forage.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,5 +17,14 @@ public class StatusService {
 
     public List<Status> findAll(){
         return repo.findAll();
+    }
+
+    public Map<Integer, Status> findAsMap(){
+        List<Status> ls = findAll();
+        Map<Integer, Status> map = new HashMap<>();
+        for(Status s : ls){
+
+        }
+        return map;
     }
 }

@@ -9,41 +9,50 @@ public class Demande {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "idClient", nullable = false)
+    private Client client;
     
-    @Column(nullable = false, length = 30)
-    private String region;
-    
-    @Column(nullable = false, length = 30)
-    private String district;
-    
-    @Column(nullable = false, length = 30)
-    private String commune;
-    
-    @Column(nullable = false, length = 30)
-    private String fokontany;
-    
-    @Column(name = "nomclient", nullable = false, length = 50)
-    private String nomclient;
-    
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
     @ManyToOne
     @JoinColumn(name = "idstatus", nullable = false)
     private Status status;
     
+    @ManyToOne
+    @JoinColumn(name = "idCommune", nullable = false)
+    private Commune commune;
+
+    private String reference;
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public Commune getCommune() {
+        return commune;
+    }
+
+    public void setCommune(Commune commune) {
+        this.commune = commune;
+    }
+
     // Constructors
     public Demande() {}
-    
-    // public Demande(String region, String district, String commune, String fokontany, 
-    //                String nomClient, Status status) {
-    //     this.region = region;
-    //     this.district = district;
-    //     this.commune = commune;
-    //     this.fokontany = fokontany;
-    //     this.NomClient = nomClient;
-    //     this.status = status;
-    // }
 
     public String getLocalisation(){
-        return String.format("%s - %s - %s - %s",region,district,commune,fokontany);
+        return commune.toString();
     }
     
     // Getters and Setters
@@ -53,46 +62,6 @@ public class Demande {
     
     public void setId(Integer id) {
         this.id = id;
-    }
-    
-    public String getRegion() {
-        return region;
-    }
-    
-    public void setRegion(String region) {
-        this.region = region;
-    }
-    
-    public String getDistrict() {
-        return district;
-    }
-    
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-    
-    public String getCommune() {
-        return commune;
-    }
-    
-    public void setCommune(String commune) {
-        this.commune = commune;
-    }
-    
-    public String getFokontany() {
-        return fokontany;
-    }
-    
-    public void setFokontany(String fokontany) {
-        this.fokontany = fokontany;
-    }
-    
-    public String getNomClient() {
-        return nomclient;
-    }
-    
-    public void setNomClient(String NomClient) {
-        this.nomclient = NomClient;
     }
     
     public Status getStatus() {

@@ -1,0 +1,1 @@
+ALTER TABLE demande ADD COLUMN reference VARCHAR(20) NOT NULL;
