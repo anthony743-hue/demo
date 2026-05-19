@@ -10,11 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
             sessionStorage.setItem("demande", JSON.stringify(demande));
         }
     });
-    
+
     form.addEventListener("submit", e => {
-        e.preventDefault();
         const demande = JSON.parse(sessionStorage.getItem("demande") || "null");
-        if (!demande) {
+        if(!demande){
             alert("Il faut que la demande existe");
             return;
         }
@@ -24,13 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const obs = form.elements['obs'].value;
 
         const std = {
-            demande: demande,
-            status: {
-                id: status
+            demande : demande,
+            status : {
+                id : status
             },
-            daty: daty,
-            observation: obs
-        }
+            createAt : daty,
+            obs : obs
+        };
+
         sendStd(std);
+    });
+
+    selectType.addEventListener("change", e => {
+        const val = e.target.value;
     });
 });

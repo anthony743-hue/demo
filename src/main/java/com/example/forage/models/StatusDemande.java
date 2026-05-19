@@ -26,6 +26,16 @@ public class StatusDemande {
     @Column(length = 50)
     private String observation;
     
+    private Long DT;
+
+    public Long getDT() {
+        return DT;
+    }
+
+    public void setDT(Long dT) {
+        DT = dT;
+    }
+
     public String getObservation() {
         return observation;
     }
