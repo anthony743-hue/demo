@@ -1,17 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${action}</title>
-    <link rel="stylesheet" href="<c:url value='/assets/bootstrap/css/bootstrap.min.css' />">
-</head>
-
-<body class="bg-light">
-    <div class="container-fluid py-4">
+ <div class="container-fluid py-4">
         <div class="row justify-content-center">
             <div class="col-lg-12">
                 <!-- Carte principale -->
@@ -47,7 +36,7 @@
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label for="client" class="form-label fw-semibold">Client</label>
-                                            <input type="text" readonly class="form-control" id="client"
+                                            <input type="text" class="form-control" id="client"
                                                    name="client" placeholder="****">
                                         </div>
                                         <div class="col-md-6">
@@ -56,7 +45,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="lieu" class="form-label fw-semibold">Lieu</label>
-                                            <input type="text" name="lieu" readonly class="form-control"
+                                            <input type="text" name="lieu" class="form-control"
                                                    id="lieu" placeholder="****">
                                         </div>
                                         <div class="col-md-6">
@@ -115,153 +104,3 @@
             </div>
         </div>
     </div>
-
-    <!-- Scripts Bootstrap -->
-    <script src="<c:url value='/assets/bootstrap/js/bootstrap.bundle.min.js' />"></script>
-    <!-- Votre script JavaScript (inchangé) -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const tableBody = document.querySelector('#tableDevis tbody');
-            const inputLibelle = document.getElementById('inputLibelle');
-            const inputQte = document.getElementById('inputQte');
-            const inputPu = document.getElementById('inputPu');
-            const addBtn = document.getElementById('addButton');
-            const dmd = document.getElementById('demandeInput');
-            const form = document.getElementById('formTemp');
-            const contextPath = "http://localhost:8080";
-
-            // --- Recherche demande (inchangé) ---
-            async function searchDemandeByRef(val) {
-                if (!val) return;
-                const url = contextPath + "/demande/byref?" + new URLSearchParams("ref=" + val);
-                try {
-                    const res = await fetch(url);
-                    if (!res.ok) throw new Error("Erreur réseau");
-                    const demande = await res.json();
-                    sessionStorage.setItem("demande", JSON.stringify(demande));
-                    form.elements['client'].value = demande.client.nom;
-                    form.elements['lieu'].value = demande.commune.nom;
-                } catch(e) { console.error(e); }
-            }
-            dmd.addEventListener("input", e => searchDemandeByRef(e.target.value.trim()));
-
-            // --- Gestion du sessionStorage ---
-            const getDevisArray = () => JSON.parse(sessionStorage.getItem("devisArr") || "[]");
-            const saveDevisArray = arr => sessionStorage.setItem("devisArr", JSON.stringify(arr));
-
-            function deleteDevis(index) {
-                const arr = getDevisArray();
-                arr.splice(index, 1);
-                saveDevisArray(arr);
-                renderDataRows();
-            }
-
-            function addDevisToTable(devis, index) {
-                const tr = document.createElement('tr');
-
-                const tdLibelle = document.createElement('td');
-                tdLibelle.textContent = devis.libelle;
-                tr.appendChild(tdLibelle);
-
-                const tdQte = document.createElement('td');
-                tdQte.textContent = devis.qte;
-                tr.appendChild(tdQte);
-
-                const tdPu = document.createElement('td');
-                tdPu.textContent = devis.pu;
-                tr.appendChild(tdPu);
-
-                const tdMontant = document.createElement('td');
-                const montant = (parseFloat(devis.qte) * parseFloat(devis.pu)).toFixed(2);
-                tdMontant.textContent = montant;
-                tr.appendChild(tdMontant);
-
-                const tdAction = document.createElement('td');
-                const btnDelete = document.createElement('button');
-                btnDelete.className = 'btn btn-outline-danger btn-sm';
-                btnDelete.textContent = 'Supprimer';
-                btnDelete.addEventListener('click', () => deleteDevis(index));
-                tdAction.appendChild(btnDelete);
-                tr.appendChild(tdAction);
-
-                tableBody.appendChild(tr);
-            }
-
-            function renderDataRows() {
-                const rows = tableBody.querySelectorAll('tr:not(#inputRow)');
-                rows.forEach(r => r.remove());
-                const arr = getDevisArray();
-                arr.forEach((devis, i) => addDevisToTable(devis, i));
-            }
-
-            function addDevis() {
-                const libelle = inputLibelle.value.trim();
-                const qte = inputQte.value.trim();
-                const pu = inputPu.value.trim();
-
-                if (!libelle || !qte || !pu) {
-                    alert("Veuillez remplir tous les champs.");
-                    return;
-                }
-
-                const devis = {
-                    libelle: libelle,
-                    qte: parseFloat(qte),
-                    pu: parseFloat(pu)
-                };
-
-                const arr = getDevisArray();
-                arr.push(devis);
-                saveDevisArray(arr);
-                addDevisToTable(devis, arr.length - 1);
-
-                inputLibelle.value = '';
-                inputQte.value = '';
-                inputPu.value = '';
-            }
-
-            document.getElementById('saveDevisBtn').addEventListener('click', async () => {
-    const details = JSON.parse(sessionStorage.getItem("devisArr") || "[]");
-    const demandeFromSession = JSON.parse(sessionStorage.getItem("demande") || "null");
-    console.log(demandeFromSession);
-    if (!demandeFromSession || details.length === 0) {
-        alert("Remplissez la référence et ajoutez au moins un détail.");
-        return;
-    }
-
-    const observation = prompt("Observation (optionnel) :") || "";
-
-    const payload = {
-        dmd: {
-            id : demandeFromSession.id
-        },   
-        observation: observation,
-        details: details
-    };
-
-    try {
-        const res = await fetch('http://localhost:8080/devis/form', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        if (res.ok) {
-            alert('Devis enregistré !');
-            sessionStorage.removeItem('devisArr');
-            sessionStorage.removeItem('demande');
-            location.reload();
-        } else {
-            alert('Erreur : ' + await res.text());
-        }
-    } catch (err) {
-        console.error(err);
-        alert('Erreur réseau');
-    }
-});
-
-            addBtn.addEventListener("click", addDevis);
-            renderDataRows();
-        });
-    </script>
-</body>
-</html>

@@ -38,8 +38,10 @@ public class DevisController {
 
     @GetMapping("/form")
     public ModelAndView showForm() {
-        ModelAndView model = new ModelAndView("devis/add");
-        return model;
+        ModelAndView mv = new ModelAndView("layout");
+        mv.addObject("contentPage", "/WEB-INF/view/devis/add.jsp");
+        mv.addObject("script", "devis.js");
+        return mv;
     }
 
     @PostMapping("/form")
@@ -72,7 +74,8 @@ public class DevisController {
 
     @GetMapping("/list")
     public ModelAndView getList(){
-        ModelAndView mv = new ModelAndView("devis/list");
+        ModelAndView mv = new ModelAndView("layout");
+        mv.addObject("contentPage", "/WEB-INF/view/devis/list.jsp");
         List<Devis> ls = devisService.findAll();
         mv.addObject("liste_devis", ls);
         return mv;

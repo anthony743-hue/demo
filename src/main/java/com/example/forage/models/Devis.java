@@ -25,6 +25,17 @@ public class Devis {
     @SequenceGenerator(name = "dev_seq",sequenceName = "devis_SEQ")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "IdDmd", nullable = false)
+    private Demande dmd;
+
+    private LocalDate createAt;
+
+    private String observation;
+
+    @OneToMany(mappedBy = "devis", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DevisDetail> details;
+
     public Long getId() {
         return id;
     }
@@ -33,10 +44,6 @@ public class Devis {
         this.id = id;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "IdDmd", nullable = false)
-    private Demande dmd;
-
     public Demande getDmd() {
         return dmd;
     }
@@ -44,13 +51,6 @@ public class Devis {
     public void setDmd(Demande dmd) {
         this.dmd = dmd;
     }
-
-    private LocalDate createAt;
-
-    private String observation;
-
-    @OneToMany(mappedBy = "devis", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DevisDetail> details;
     
     public List<DevisDetail> getDetails() {
         return details;

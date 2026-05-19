@@ -43,17 +43,18 @@ public class DemandeController {
 
     @GetMapping("/add")
     public ModelAndView insertDemande(){
-        ModelAndView model = new ModelAndView("demande/insert");
+        ModelAndView mv = new ModelAndView("layout");
+        mv.addObject("contentPage", "/WEB-INF/view/demande/insert.jsp");
         List<Status> lsStatus = statusService.findAll();
         List<Commune> lsCommunes = cmService.getAll();
         List<Client> lsClients = clService.findAll();
 
-        model.addObject("listeStatus", lsStatus);
-        model.addObject("listeCommune", lsCommunes);
-        model.addObject("listeClient", lsClients);
-        model.addObject("path", "add");
-        model.addObject("action", "Enregistrer la demande");
-        return model;
+        mv.addObject("listeStatus", lsStatus);
+        mv.addObject("listeCommune", lsCommunes);
+        mv.addObject("listeClient", lsClients);
+        mv.addObject("path", "add");
+        mv.addObject("action", "Enregistrer la demande");
+        return mv;
     }    
     
     @PostMapping("/add")
@@ -66,19 +67,20 @@ public class DemandeController {
 
     @GetMapping("/update")
     public ModelAndView getMethodName(@RequestParam Integer id) {
-        ModelAndView model = new ModelAndView("demande/insert");
+        ModelAndView mv = new ModelAndView("layout");
+        mv.addObject("contentPage", "/WEB-INF/view/demande/insert.jsp");
         List<Status> lsStatus = statusService.findAll();
         List<Commune> lsCommunes = cmService.getAll();
         List<Client> lsClients = clService.findAll();
         Demande d = dmdService.findById(id);
 
-        model.addObject("listeStatus", lsStatus);
-        model.addObject("listeCommune", lsCommunes);
-        model.addObject("listeClient", lsClients);
-        model.addObject("dmd", d);
-        model.addObject("path", "update");
-        model.addObject("action", "Modifier la demande");
-        return model;
+        mv.addObject("listeStatus", lsStatus);
+        mv.addObject("listeCommune", lsCommunes);
+        mv.addObject("listeClient", lsClients);
+        mv.addObject("dmd", d);
+        mv.addObject("path", "update");
+        mv.addObject("action", "Modifier la demande");
+        return mv;
     }
 
     @PostMapping("/update")
@@ -96,15 +98,15 @@ public class DemandeController {
     
     @GetMapping("/list")
     public ModelAndView getList() {
-        ModelAndView model = new ModelAndView("demande/list");
+        ModelAndView mv = new ModelAndView("layout");
+        mv.addObject("contentPage", "/WEB-INF/view/demande/list.jsp");
         List<Demande> ls = dmdService.getAll();
-        model.addObject("listDemande", ls);
-        return model;
+        mv.addObject("listDemande", ls);
+        return mv;
     }
     
     @GetMapping("/remove")
     public String remove(@RequestParam Integer id){
-        
         return "redirect:/demande/list";
     }
 

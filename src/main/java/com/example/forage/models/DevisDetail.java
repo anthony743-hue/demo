@@ -25,7 +25,7 @@ public class DevisDetail {
     @JoinColumn(name = "idDevis")
     private Devis devis;
 
-        public Devis getDevis() {
+    public Devis getDevis() {
         return devis;
     }
 

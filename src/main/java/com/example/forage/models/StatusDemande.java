@@ -2,6 +2,7 @@ package com.example.forage.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "status_Demande")
@@ -21,7 +22,18 @@ public class StatusDemande {
     
     @Column(nullable = false)
     private LocalDateTime daty;
+
+    @Column(length = 50)
+    private String observation;
     
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
+
     // Constructors
     public StatusDemande() {}
 
@@ -68,5 +80,14 @@ public class StatusDemande {
     
     public void setDaty(LocalDateTime daty) {
         this.daty = daty;
+    }
+
+    public void setDaty(String s){
+        if( s == null ){
+            setDaty(LocalDateTime.now());
+        } else{
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            setDaty(LocalDateTime.parse(s, dtf));
+        }
     }
 }

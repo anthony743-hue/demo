@@ -43,3 +43,25 @@ Creer une fonction transactionnelle
 
 
 Creer une fonction pour recuperer les status 
+
+
+Affichage 1: (ajout)
+Demande (Recherche pas reference)
+Date(Jour et Heure,minute) : ....
+Observation
+Statut
+
+Affichage 2 : (modif)
+Comme affichage 1 mais on peut changer suivant le statut qu'on choisi : la date et l'observation du StatusDemande
+
+Configurations :
+Rajout de table parametre :
+idStatut1
+idStatut2
+Duree (en minute)
+Alerte (Couleur)
+
+Ajout de colonne Duree Travaille (DT)
+a la table StatusDemande
+
+Centraliser la fonction pour calculer le nombre de minute ecoulee entre deux dates (on ne compte pas le week-end, en moyenne on travaille de 8h-16h)

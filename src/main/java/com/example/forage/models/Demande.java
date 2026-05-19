@@ -1,5 +1,7 @@
 package com.example.forage.models;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +16,16 @@ public class Demande {
     @JoinColumn(name = "idClient", nullable = false)
     private Client client;
     
+    @ManyToOne
+    @JoinColumn(name = "idstatus", nullable = false)
+    private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "idCommune", nullable = false)
+    private Commune commune;
+
+    private String reference;
+
     public Client getClient() {
         return client;
     }
@@ -21,16 +33,6 @@ public class Demande {
     public void setClient(Client client) {
         this.client = client;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "idstatus", nullable = false)
-    private Status status;
-    
-    @ManyToOne
-    @JoinColumn(name = "idCommune", nullable = false)
-    private Commune commune;
-
-    private String reference;
 
     public String getReference() {
         return reference;
