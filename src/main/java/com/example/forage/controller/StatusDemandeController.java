@@ -27,7 +27,7 @@ public class StatusDemandeController {
     private DemandeService dmdsService;
 
     private StatusService statusService;
-    
+
     public StatusDemandeController(StatusDemandeService stdserivce, DemandeService dmdsService,
             StatusService statusService) {
         this.stdserivce = stdserivce;
@@ -36,7 +36,7 @@ public class StatusDemandeController {
     }
 
     @GetMapping("/add")
-    public ModelAndView getAddPage(){
+    public ModelAndView getAddPage() {
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/statusdmd/add.jsp");
         mv.addObject("script", "std.js");
@@ -47,7 +47,7 @@ public class StatusDemandeController {
 
     @PostMapping("/add")
     @ResponseBody
-    public ResponseEntity<?> submitAdd(@RequestBody StatusDemande std){
+    public ResponseEntity<?> submitAdd(@RequestBody StatusDemande std) {
         try {
             stdserivce.insert(std);
         } catch (Exception e) {
@@ -57,14 +57,48 @@ public class StatusDemandeController {
     }
 
     @GetMapping("/update")
-    public ModelAndView getModifPage(){
+    public ModelAndView getModifPage() {
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/statusdmd/update.jsp");
+        mv.addObject("script", "std2.js");
         return mv;
     }
 
     @PostMapping("/update")
-    public String submitModif(){
-        return "redirect:/statusdmd/update";
+    public ResponseEntity<?> submitModif(@RequestBody StatusDemande std) {
+        List<StatusDemande> ls = stdserivce.getByDemande(std.getDemande().getReference());
+        int idx = 0;
+        StatusDemande nextStd = null, previousStd = null;
+
+        StatusDemande stdBeforeUpdate = stdserivce.findById(std.getId());
+        if (stdBeforeUpdate.equals(std)) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Aucune modification n'a ete effectue");
+        }
+        for (int i = 0; i < ls.size(); i++) {
+            if (ls.get(i).getId() == std.getId()) {
+                idx = i;
+                break;
+            }
+        }
+
+        if (!stdBeforeUpdate.getDaty().isEqual(std.getDaty()) ) {
+            Long duration = 0L;
+            if (idx > 0) {
+                previousStd = ls.get(idx - 1);
+                if (previousStd.getDaty().isBefore(std.getDaty())) {
+                    duration = std.getDiff(previousStd);
+
+                }
+            }
+            if (idx < ls.size() - 1) {
+                nextStd = ls.get(idx + 1);
+                if (nextStd.getDaty().isAfter(std.getDaty())) {
+                    duration = std.getDiff(nextStd);
+                    
+                }
+            }
+        }
+
+        return null;
     }
 }

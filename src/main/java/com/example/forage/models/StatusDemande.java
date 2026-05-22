@@ -1,6 +1,8 @@
 package com.example.forage.models;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -42,6 +44,41 @@ public class StatusDemande {
 
     public void setObservation(String observation) {
         this.observation = observation;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if( o instanceof StatusDemande s){
+            return id == s.id && daty.isEqual(s.getDaty())
+            && observation.equals(s.getObservation()) && status.getId() == (s.getStatus().getId()) && 
+            demande.getId() == s.getDemande().getId();
+        }
+        return false;
+    }
+
+    public Long getDiff(StatusDemande other){
+        Long a1 = getDiffMinutes(true);
+        Long a2 = other.getDiffMinutes(false);
+
+        Long w1 = getDiffInDayWeek();
+        Long w2 = other.getDiffInDayWeek();        
+        return 0L;
+    }
+
+    private Long getDiffMinutes(boolean before){
+        long a1 = before ? 57600 : 28800;
+        long a2 = daty.getHour() * 3600 + daty.getMinute() * 60 + daty.getSecond();
+        return Math.abs(a1 - a2) / 60;
+    }   
+
+    private Long getDiffInWeek(StatusDemande std){
+        
+        return 0L;
+    }
+
+    private Long getDiffInDayWeek(){
+        long second_day = 28800;
+        return (5 - (long) (daty.getDayOfWeek().getValue())) * second_day;
     }
 
     // Constructors

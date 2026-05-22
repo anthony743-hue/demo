@@ -2,8 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const dmd = document.getElementById('demandeInput');
     const form = document.getElementById('formTemp');
     const selectType = document.getElementById("status");
-    const contextPath = "http://localhost:8080";
-
     dmd.addEventListener("input", e => {
         const demande = searchDemandeByRef(e.target.value.trim());
         if(demande){

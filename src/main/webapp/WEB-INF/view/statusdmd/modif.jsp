@@ -19,11 +19,11 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label for="date" class="form-label fw-semibold">Date</label>
-                                <input type="datetime-local" name="createAt" class="form-control" id="date">
+                                <input type="datetime-local" name="createAt" class="form-control" id="daty">
                             </div>
                             <div class="col-md-6">
                                 <label for="lieu" class="form-label fw-semibold">Observation</label>
-                                <input type="text" name="obs" class="form-control" id="lieu"
+                                <input type="text" name="obs" class="form-control" id="obs"
                                     placeholder="****">
                             </div>
                             <div class="col-md-6">
@@ -37,7 +37,7 @@
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Enregistrer le Status Demande</button>
+                        <button type="submit" class="btn btn-primary w-100">Modifier le Status Demande</button>
                     </form>
                         </div>
                     </div>

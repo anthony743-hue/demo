@@ -53,6 +53,7 @@
         <jsp:include page="${contentPage}" />
     </div>
         <script src="<c:url value='/assets/bootstrap/js/bootstrap.bundle.min.js' />"></script>
+        <script src="<c:url value='/assets/bootstrap/js/script.js' />"></script>
         <c:if test="${not empty script}">
             <script src="<c:url value='/assets/bootstrap/js/${script}' />"></script>
         </c:if>
