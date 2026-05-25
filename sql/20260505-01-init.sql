@@ -16,6 +16,8 @@ CREATE TABLE Demande(
     CONSTRAINT Fk_status_demande FOREIGN KEY(idStatus) REFERENCES Status(id)
 );
 
+
+
 ALTER TABLE Demande ADD COLUMN
 Ref VARCHAR(30);
 

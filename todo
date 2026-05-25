@@ -70,8 +70,14 @@ ok Difference entre lui et 16h
 
 ok Calcule les heures restant avant la fin de weekDay
 
-Calcule le nombre de semaine ecoule apres ma semaine1 et avant semaine2
+ok Calcule le nombre de semaine ecoule apres ma semaine1 et avant semaine2
 
 ok Calcule les heures ecoules jusqu'a moi
 
 ok Diffentre moi 8h et moi
+
+Faire la somme chacun d'eux
+
+
+[ ] Dynamiser le Type de Status en utilisant un Map ou un enum
+
