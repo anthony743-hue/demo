@@ -4,11 +4,23 @@ async function searchDemandeByRef(val) {
     if (!val) return;
     const url = contextPath + "/demande/byref?" + new URLSearchParams("ref=" + val);
     try {
-        const res = await fetch(url);
+        const res = await fetch(url,{
+            headers: { 'Content-Type': 'application/json' },
+        });
         if (!res.ok) throw new Error("Erreur réseau");
         const demande = await res.json();
         return demande;
     } catch (e) { console.error(e); }
+}
+
+function validJson(val){
+    try {
+        JSON.parse(val);
+        return true;
+    } catch (error) {
+        alert(error);
+        return false;
+    }
 }
 
 async function sendStd(param) {

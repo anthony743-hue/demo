@@ -50,11 +50,12 @@ public class StatusDemande {
     @Override
     public boolean equals(Object o){
         if( o instanceof StatusDemande s){
-            return id == s.id && daty.isEqual(s.getDaty())
-            && observation.equals(s.getObservation()) && status.getId() == (s.getStatus().getId()) && 
+            boolean a = id == s.id && daty.isEqual(s.getDaty());
+            boolean b =  status.getId() == (s.getStatus().getId()) && 
             demande.getId() == s.getDemande().getId();
+            boolean c = observation != null && s.getObservation() != null && observation.equals(s.getObservation());
+            return a && b && c;
         }
-        Long a = 0;
         return false;
     }
 

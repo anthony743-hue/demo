@@ -41,7 +41,7 @@ public class StatusDemandeController {
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/statusdmd/add.jsp");
         mv.addObject("script", "std.js");
-        List<Status> status = statusService.findAll();
+        List<Status> status = statusService.findByDesignationContaining("Demande");
         mv.addObject("listeStatus", status);
         return mv;
     }
@@ -104,7 +104,7 @@ public class StatusDemandeController {
             }
             stdserivce.insert(std);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("ON a un probleme : " + e.getMessage() + " // cause : " + e.getCause().toString());
+            return ResponseEntity.badRequest().body("ON a un probleme : " + e.getMessage());
         }
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Status demande modifie avec succes");

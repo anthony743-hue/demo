@@ -1,7 +1,5 @@
 package com.example.forage.models;
 
-import java.util.List;
-
 import jakarta.persistence.*;
 
 @Entity

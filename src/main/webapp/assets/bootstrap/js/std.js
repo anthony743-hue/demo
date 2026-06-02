@@ -1,13 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     const dmd = document.getElementById('demandeInput');
     const form = document.getElementById('formTemp');
-    const selectType = document.getElementById("status");
-    dmd.addEventListener("input", e => {
-        const demande = searchDemandeByRef(e.target.value.trim());
-        if(demande){
+    async function getDemande(e){
+        let demande = await searchDemandeByRef(e.target.value.trim());
+        if(demande !== null && demande !== undefined){
+            let msg = "L'objet parsable";
             sessionStorage.setItem("demande", JSON.stringify(demande));
         }
-    });
+    }
+    dmd.addEventListener("input", e => getDemande(e));
     
     form.addEventListener("submit", e => {
         e.preventDefault();

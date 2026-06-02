@@ -12,7 +12,17 @@ public class Status {
     
     @Column(unique = true, nullable = false, length = 30)
     private String designation;
+
+    private String sigle;
     
+    public String getSigle() {
+        return sigle;
+    }
+
+    public void setSigle(String sigle) {
+        this.sigle = sigle;
+    }
+
     // Constructors
     public Status() {}
     

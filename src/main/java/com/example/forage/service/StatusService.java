@@ -27,4 +27,8 @@ public class StatusService {
         }
         return map;
     }
+
+    public List<Status> findByDesignationContaining(String s){
+        return repo.findByDesignationContaining(s);
+    }
 }

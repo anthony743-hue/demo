@@ -35,20 +35,6 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label" for="status">Statut</label>
-                                <select name="status" id="status" class="form-select" required>
-                                    <option value="">Choisir un statut</option>
-                                    <c:forEach items="${listeStatus}" var="item">
-                                        <option value="${item.id}" <c:if
-                                            test="${not empty dmd and not empty dmd.status and dmd.status.id == item.id}">
-                                            selected</c:if>>
-                                            ${item.designation}
-                                        </option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-
-                            <div class="col-md-6">
                                 <label class="form-label" for="commune">Commune</label>
                                 <select name="commune" id="commune" class="form-select" required>
                                     <option value="">Choisir une commune</option>

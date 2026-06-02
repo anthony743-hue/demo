@@ -45,11 +45,9 @@ public class DemandeController {
     public ModelAndView insertDemande(){
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/demande/insert.jsp");
-        List<Status> lsStatus = statusService.findAll();
         List<Commune> lsCommunes = cmService.getAll();
         List<Client> lsClients = clService.findAll();
 
-        mv.addObject("listeStatus", lsStatus);
         mv.addObject("listeCommune", lsCommunes);
         mv.addObject("listeClient", lsClients);
         mv.addObject("path", "add");
@@ -59,6 +57,8 @@ public class DemandeController {
     
     @PostMapping("/add")
     public String saveDemande(Demande demande){
+        List<Status> lsStatus =  statusService.findByDesignationContaining("Demande");
+        demande.setStatus(lsStatus.get(0));
         StatusDemande std = new StatusDemande(demande, LocalDateTime.now());
         dmdService.insert(demande);
         stdService.insert(std);
@@ -69,7 +69,7 @@ public class DemandeController {
     public ModelAndView getMethodName(@RequestParam Integer id) {
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/demande/insert.jsp");
-        List<Status> lsStatus = statusService.findAll();
+        List<Status> lsStatus = statusService.findByDesignationContaining("Demande");
         List<Commune> lsCommunes = cmService.getAll();
         List<Client> lsClients = clService.findAll();
         Demande d = dmdService.findById(id);
@@ -102,6 +102,14 @@ public class DemandeController {
         mv.addObject("contentPage", "/WEB-INF/view/demande/list.jsp");
         List<Demande> ls = dmdService.getAll();
         mv.addObject("listDemande", ls);
+        return mv;
+    }
+
+    @GetMapping("/detail")
+    public ModelAndView getDetail(@RequestParam Integer id){
+        ModelAndView mv  = new ModelAndView("layout");
+        Demande dmd = dmdService.findById(id);
+        List<StatusDemande> ls = stdService.getByDemande(dmd);
         return mv;
     }
     

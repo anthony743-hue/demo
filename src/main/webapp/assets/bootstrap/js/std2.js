@@ -58,16 +58,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function changeDmdFieldValue(name_field, val) {
         const std = JSON.parse(sessionStorage.getItem("statusDmdTarget"));
-        if (std) {
+        if (std !== null && std !== undefined) {
             std[name_field] = val;
             sessionStorage.setItem("statusDmdTarget", JSON.stringify(std));
         }
     }
-
+    
     async function saveChange() {
-        let std = JSON.parse(sessionStorage.getItem("statusDmdTarget") || "null");
+        let st = JSON.parse(sessionStorage.getItem("statusDmdTarget"));
         const url = contextPath + "/statusdmd/update";
-        if (std === null || std === undefined) {
+        if (st === null || st === undefined) {
             alert("Il faut que le StatusDemande existe");
             return;
         }
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const request = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(std)
+                body: JSON.stringify(st)
             });
             if (!request.ok) throw new Error(request.body);
             const response = await request.json();
