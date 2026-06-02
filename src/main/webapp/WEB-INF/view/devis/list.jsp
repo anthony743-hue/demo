@@ -23,9 +23,9 @@
                 <tbody>
                     <c:if test="${not empty liste_devis}">
                         <c:forEach items="${liste_devis}" var="item">
-                            <td>{item.id}</td>
-                            <td>{item.createAt}</td>
-                            <td>{item.observation}</td>       
+                            <td>${item.id}</td>
+                            <td>${item.createAt}</td>
+                            <td>${item.observation}</td>       
                         </c:forEach>
                     </c:if>
                 </tbody>
