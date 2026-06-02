@@ -2,7 +2,6 @@ package com.example.forage.models;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,10 +12,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.ArrayList;
 
 @Entity
 public class Devis {
@@ -35,6 +30,14 @@ public class Devis {
 
     @OneToMany(mappedBy = "devis", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DevisDetail> details;
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
 
     public Long getId() {
         return id;

@@ -49,7 +49,13 @@ public class StatusDemandeController {
     @PostMapping("/add")
     @ResponseBody
     public ResponseEntity<?> submitAdd(@RequestBody StatusDemande std) {
+        Demande d = dmdsService.findById(std.getDemande().getId());
+        if(d.getStatus().getId() == std.getStatus().getId()){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Envoie impossible, veuillez definir un autre status ");
+        }
+        d.setStatus(std.getStatus());
         try {
+            dmdsService.insert(d);
             stdserivce.insert(std);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

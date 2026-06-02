@@ -79,7 +79,7 @@ ok Diffentre moi 8h et moi
 Faire la somme chacun d'eux
 
 
-[ ] Dynamiser le Type de Status en utilisant un Map ou un enum *
+[Ok] Dynamiser le Type de Status en utilisant un Map ou un enum *
 
 Type :
 	DEC
@@ -91,4 +91,7 @@ Type :
 
 [Ok] Tester le calcul de DT *
 [Ok] Corriger si necessaire
-[ ] Ajouter la fonctionnalite pour filtrer les demandes ayant un Statut avec tel alerte**	
+[ ] Faire marcher le bouton pour connaitre les details des Alertes concernant 
+
+[ ] Afficher la liste de devis
+[ ] Faire marcher le bouton qui mene aux details d'un devis
