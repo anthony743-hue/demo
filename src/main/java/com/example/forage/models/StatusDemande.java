@@ -76,7 +76,7 @@ public class StatusDemande {
 
     private Long getDiffMinutes(boolean before){
         long a1 = before ? 960 : 480;
-        long a2 = daty.getHour() * 60 + daty.getMinute();
+        long a2 =  daty.getHour() * 60 + daty.getMinute();
         long diff = before ? a1 - a2 : a2 - a1;
         return Math.max(Math.min(diff,960),0);
     }   
