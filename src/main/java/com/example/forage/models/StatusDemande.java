@@ -53,6 +53,7 @@ public class StatusDemande {
             && observation.equals(s.getObservation()) && status.getId() == (s.getStatus().getId()) && 
             demande.getId() == s.getDemande().getId();
         }
+        Long a = 0;
         return false;
     }
 
