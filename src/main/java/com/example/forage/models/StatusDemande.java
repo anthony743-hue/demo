@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "status_Demande")
@@ -28,14 +29,14 @@ public class StatusDemande {
     @Column(length = 50)
     private String observation;
     
-    private Long DT;
+    private Long dt;
 
     public Long getDT() {
-        return DT;
+        return dt;
     }
 
     public void setDT(Long dT) {
-        DT = dT;
+        this.dt = dT;
     }
 
     public String getObservation() {
@@ -61,25 +62,38 @@ public class StatusDemande {
         Long a1 = getDiffMinutes(true);
         Long a2 = other.getDiffMinutes(false);
 
-        Long w1 = getDiffInDayWeek();
-        Long w2 = other.getDiffInDayWeek();        
-        return 0L;
+        Long diffWeek =  getDiffInWeek(other);
+        Long w1 = 0L;
+        Long w2 = 0L;
+        if(diffWeek > 0){
+            w1 = getDiffInDayWeek();
+            w2 = other.getDiffInDayWeek();
+        }
+        
+        System.out.println(String.format("Jour S1 %d S2 %d", daty.getDayOfWeek().getValue(),other.getDaty().getDayOfWeek().getValue()));
+        System.out.println(String.format("A1 %d A2 %d w1 %d w2 %d  W3 %d", a1,a2,w1,w2,getDiffInWeek(other)));
+        return a1 + a2 + w1 + w2 + diffWeek;
     }
 
     private Long getDiffMinutes(boolean before){
-        long a1 = before ? 57600 : 28800;
-        long a2 = daty.getHour() * 3600 + daty.getMinute() * 60 + daty.getSecond();
-        return Math.abs(a1 - a2) / 60;
+        long a1 = before ? 960 : 480;
+        long a2 =  daty.getHour() * 60 + daty.getMinute();
+        long diff = before ? a1 - a2 : a2 - a1;
+        return Math.max(Math.min(diff,960),0);
     }   
 
     private Long getDiffInWeek(StatusDemande std){
-        
-        return 0L;
+        long diffInDay = daty.until(std.getDaty(), ChronoUnit.DAYS);
+        long diff = 0L;
+        if( diffInDay > 7 ){
+            diff = daty.until(std.getDaty(), ChronoUnit.WEEKS) * 2400;
+        }
+        return diff;
     }
 
     private Long getDiffInDayWeek(){
-        long second_day = 28800;
-        return (5 - (long) (daty.getDayOfWeek().getValue())) * second_day;
+        long minutes_day = 480;
+        return Math.max((5 - (long) (daty.getDayOfWeek().getValue())),0) * minutes_day;
     }
 
     // Constructors
@@ -134,7 +148,7 @@ public class StatusDemande {
         if( s == null ){
             setDaty(LocalDateTime.now());
         } else{
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm[:ss][.SSSSSS]");
             setDaty(LocalDateTime.parse(s, dtf));
         }
     }

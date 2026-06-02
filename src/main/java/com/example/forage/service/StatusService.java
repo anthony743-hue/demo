@@ -23,7 +23,7 @@ public class StatusService {
         List<Status> ls = findAll();
         Map<Integer, Status> map = new HashMap<>();
         for(Status s : ls){
-
+            map.put(s.getId(), s);
         }
         return map;
     }

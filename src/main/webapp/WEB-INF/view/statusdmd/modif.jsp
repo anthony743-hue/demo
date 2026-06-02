@@ -19,7 +19,7 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label for="date" class="form-label fw-semibold">Date</label>
-                                <input type="datetime-local" name="createAt" class="form-control" id="daty">
+                                <input type="datetime-local" name="daty" class="form-control" id="daty">
                             </div>
                             <div class="col-md-6">
                                 <label for="lieu" class="form-label fw-semibold">Observation</label>
@@ -29,11 +29,8 @@
                             <div class="col-md-6">
                                 <label for="type" class="form-label fw-semibold">Statut</label>
                                 <select name="status" id="status" class="form-select">
-                                    <c:if test="${not empty listeStatus}">
-                                        <c:forEach items="${listeStatus}" var="item">
-                                            <option value="${item.id}">${item.designation}</option>
-                                        </c:forEach>
-                                    </c:if>
+                                    <option value="">Choisir un StatusDemande</option>
+                                    
                                 </select>
                             </div>
                         </div>

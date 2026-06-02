@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.forage.models.Demande;
 import com.example.forage.models.StatusDemande;
 import com.example.forage.repository.StatusDemandeRepository;
 
@@ -17,8 +18,8 @@ public class StatusDemandeService {
         repo.save(std);
     }
 
-    public List<StatusDemande> getByDemande(String ref){
-        return repo.findByDemande(ref);
+    public List<StatusDemande> getByDemande(Demande d){
+        return repo.findByDemande(d);
     }
 
     public StatusDemande findById(Integer id){

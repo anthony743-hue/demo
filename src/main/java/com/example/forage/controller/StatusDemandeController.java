@@ -2,7 +2,6 @@ package com.example.forage.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,9 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.forage.models.Demande;
 import com.example.forage.models.Status;
 import com.example.forage.models.StatusDemande;
 import com.example.forage.service.DemandeService;
@@ -58,47 +59,67 @@ public class StatusDemandeController {
 
     @GetMapping("/update")
     public ModelAndView getModifPage() {
+        // List<StatusDemande> ls = stdserivce.getByDemande(reference);
         ModelAndView mv = new ModelAndView("layout");
-        mv.addObject("contentPage", "/WEB-INF/view/statusdmd/update.jsp");
+        mv.addObject("contentPage", "/WEB-INF/view/statusdmd/modif.jsp");
         mv.addObject("script", "std2.js");
         return mv;
     }
 
     @PostMapping("/update")
+    @ResponseBody
     public ResponseEntity<?> submitModif(@RequestBody StatusDemande std) {
-        List<StatusDemande> ls = stdserivce.getByDemande(std.getDemande().getReference());
-        int idx = 0;
-        StatusDemande nextStd = null, previousStd = null;
-
-        StatusDemande stdBeforeUpdate = stdserivce.findById(std.getId());
-        if (stdBeforeUpdate.equals(std)) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Aucune modification n'a ete effectue");
-        }
-        for (int i = 0; i < ls.size(); i++) {
-            if (ls.get(i).getId() == std.getId()) {
-                idx = i;
-                break;
+        try {
+            List<StatusDemande> ls = stdserivce.getByDemande(std.getDemande());
+            StatusDemande stdBeforeUpdate = stdserivce.findById(std.getId());
+            if (stdBeforeUpdate.equals(std)) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Aucune modification n'a ete effectue");
             }
-        }
 
-        if (!stdBeforeUpdate.getDaty().isEqual(std.getDaty()) ) {
-            Long duration = 0L;
-            if (idx > 0) {
-                previousStd = ls.get(idx - 1);
-                if (previousStd.getDaty().isBefore(std.getDaty())) {
-                    duration = std.getDiff(previousStd);
-
+            if (!stdBeforeUpdate.getDaty().isEqual(std.getDaty())) {
+                int idx = 0;
+                StatusDemande nextStd = null, previousStd = null;
+                for (int i = 0; i < ls.size(); i++) {
+                    if (ls.get(i).getId() == std.getId()) {
+                        idx = i;
+                        break;
+                    }
+                }
+                Long duration = 0L;
+                if (idx > 0) {
+                    previousStd = ls.get(idx - 1);
+                    if (previousStd.getDaty().isBefore(std.getDaty())) {
+                        duration = previousStd.getDiff(std);
+                        std.setDT(duration);
+                    }
+                }
+                if (idx < ls.size() - 1) {
+                    nextStd = ls.get(idx + 1);
+                    if (nextStd.getDaty().isAfter(std.getDaty())) {
+                        duration = std.getDiff(nextStd);
+                        nextStd.setDT(duration);
+                        stdserivce.insert(previousStd);
+                    }
                 }
             }
-            if (idx < ls.size() - 1) {
-                nextStd = ls.get(idx + 1);
-                if (nextStd.getDaty().isAfter(std.getDaty())) {
-                    duration = std.getDiff(nextStd);
-                    
-                }
-            }
+            stdserivce.insert(std);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("ON a un probleme : " + e.getMessage() + " // cause : " + e.getCause().toString());
         }
 
-        return null;
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Status demande modifie avec succes");
+    }
+
+    @GetMapping("/byref")
+    public ResponseEntity<?> getByRef(@RequestParam String ref) {
+        List<StatusDemande> ls = null;
+        Demande d = null;
+        try {
+            d = dmdsService.findByReference(ref);
+            ls = stdserivce.getByDemande(d);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>(ls, HttpStatus.CREATED);
     }
 }
