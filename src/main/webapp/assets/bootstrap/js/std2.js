@@ -7,10 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function getLsStatus(e) {
         const lsStatusDmd = await searchStatusDmdByRef(e.target.value.trim());
+        sessionStorage.clear();
         if (lsStatusDmd) {
             selectType.innerHTML = "";
             const deFaultOpt = document.createElement("option");
             deFaultOpt.text = "Choisir un StatusDemande";
+            deFaultOpt.value = "";
             selectType.appendChild(deFaultOpt);
             sessionStorage.setItem("lsStatusDmd", JSON.stringify(lsStatusDmd));
             let option;
@@ -45,21 +47,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     selectType.addEventListener("change", e => {
         const val = parseInt(e.target.value);
-        if (val) {
-            const lsStatusDmd = JSON.parse(sessionStorage.getItem("lsStatusDmd") || "[]");
-            try {
-                const a = lsStatusDmd[val];
-                form.elements['daty'].value = formatDate(a.daty);
-                form.elements['obs'].value = a.observation;
-                sessionStorage.setItem("statusDmdTarget", JSON.stringify(a));
-            } catch (error) {
-                console.error(error);
-            }
+        const lsStatusDmd = JSON.parse(sessionStorage.getItem("lsStatusDmd") || "[]");
+        if (val >= 0 && val < lsStatusDmd.length) {
+            const a = lsStatusDmd[val];
+            form.elements['daty'].value = formatDate(a.daty);
+            form.elements['obs'].value = a.observation;
+            sessionStorage.setItem("statusDmdTarget", JSON.stringify(a));
         }
     });
 
     function changeDmdFieldValue(name_field, val) {
-        const std = JSON.parse(sessionStorage.getItem("statusDmdTarget")) || "null";
+        const std = JSON.parse(sessionStorage.getItem("statusDmdTarget"));
         if (std) {
             std[name_field] = val;
             sessionStorage.setItem("statusDmdTarget", JSON.stringify(std));
@@ -67,15 +65,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function saveChange() {
-        const std = JSON.parse( sessionStorage.getItem("statusDmdTarget") || "null");
+        let std = JSON.parse(sessionStorage.getItem("statusDmdTarget") || "null");
         const url = contextPath + "/statusdmd/update";
+        if (std === null || std === undefined) {
+            alert("Il faut que le StatusDemande existe");
+            return;
+        }
         try {
             const request = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(std)
             });
-            if (!request.ok) throw new Error("Erreur reseau");
+            if (!request.ok) throw new Error(request.body);
             const response = await request.json();
             alert("RES : " + response);
         } catch (error) {

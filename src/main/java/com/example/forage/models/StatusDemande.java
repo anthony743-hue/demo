@@ -82,7 +82,11 @@ public class StatusDemande {
     }   
 
     private Long getDiffInWeek(StatusDemande std){
-        long diff = daty.until(std.getDaty(), ChronoUnit.WEEKS) * 2400;
+        long diffInDay = daty.until(std.getDaty(), ChronoUnit.DAYS);
+        long diff = 0L;
+        if( diffInDay > 7 ){
+            diff = daty.until(std.getDaty(), ChronoUnit.WEEKS) * 2400;
+        }
         return diff;
     }
 

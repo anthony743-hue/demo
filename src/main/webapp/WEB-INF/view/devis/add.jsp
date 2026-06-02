@@ -51,8 +51,12 @@
                                         <div class="col-md-6">
                                             <label for="type" class="form-label fw-semibold">Type</label>
                                             <select name="type" id="type" class="form-select">
-                                                <option value="1">Etude</option>
-                                                <option value="2">Forage</option>
+                                                <option value="DEC">devis Etude Cree</option>
+                                                <option value="DEA">devis Etude Accepte</option>
+                                                <option value="DER">devis Etude Refuse</option>
+                                                <option value="DFC">devis Forage Cree</option>
+                                                <option value="DFA">devis Forage Accepte</option>
+                                                <option value="DFR">devis Forage Refuse</option>
                                             </select>
                                         </div>
                                     </div>

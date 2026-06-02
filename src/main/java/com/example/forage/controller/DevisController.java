@@ -2,7 +2,8 @@ package com.example.forage.controller;
 
 import java.time.LocalDate;
 import java.util.List;
-
+import java.util.Map;
+import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,12 @@ import com.example.forage.models.Client;
 import com.example.forage.models.Demande;
 import com.example.forage.models.Devis;
 import com.example.forage.models.DevisDetail;
+import com.example.forage.models.Status;
 import com.example.forage.service.ClientService;
 import com.example.forage.service.DemandeService;
 import com.example.forage.service.DevisService;
+import com.example.forage.service.StatusService;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -29,11 +33,13 @@ public class DevisController {
     private ClientService clientService;
     private DevisService devisService;
     private DemandeService demandeService;
+    private StatusService stService;
 
-    public DevisController(ClientService clService, DevisService devisService, DemandeService demandeService) {
+    public DevisController(ClientService clService, DevisService devisService, DemandeService demandeService, StatusService stService) {
         this.clientService = clService;
         this.devisService = devisService;
         this.demandeService = demandeService;
+        this.stService = stService;
     }
 
     @GetMapping("/form")
@@ -57,14 +63,23 @@ public class DevisController {
             return ResponseEntity.badRequest().body("Demande introuvable pour l'ID " + demandeId);
         }
 
+        Map<String, Integer> mp = new HashMap<>();
+        mp.put("DEC", 4);
+        mp.put("DEA", 5);
+        mp.put("DER", 6);
+        mp.put("DFC", 7);
+        mp.put("DFA", 8);
+        mp.put("DFR", 9);
+
+        Status s = devis.getDmd().getStatus();
+        if(!mp.containsKey(s.getDesignation())){
+            return ResponseEntity.badRequest().body("Status Inconnue : " + s.getDesignation());
+        }
+
+        Map<Integer, Status> map = stService.findAsMap();
+        demande.setStatus(map.get(mp.get(s.getDesignation())));
         devis.setDmd(demande);
         devis.setCreateAt(LocalDate.now());
-
-        if (devis.getDetails() != null) {
-            // for (DevisDetail detail : devis.getDetails()) {
-            //     devis.addDetail(detail); 
-            // }
-        }
 
         devisService.insert(devis);
 

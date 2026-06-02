@@ -69,39 +69,43 @@ public class StatusDemandeController {
     @PostMapping("/update")
     @ResponseBody
     public ResponseEntity<?> submitModif(@RequestBody StatusDemande std) {
-        List<StatusDemande> ls = stdserivce.getByDemande(std.getDemande());
-        StatusDemande stdBeforeUpdate = stdserivce.findById(std.getId());
-        if (stdBeforeUpdate.equals(std)) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Aucune modification n'a ete effectue");
-        }
+        try {
+            List<StatusDemande> ls = stdserivce.getByDemande(std.getDemande());
+            StatusDemande stdBeforeUpdate = stdserivce.findById(std.getId());
+            if (stdBeforeUpdate.equals(std)) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Aucune modification n'a ete effectue");
+            }
 
-        if (!stdBeforeUpdate.getDaty().isEqual(std.getDaty())) {
-            int idx = 0;
-            StatusDemande nextStd = null, previousStd = null;
-            for (int i = 0; i < ls.size(); i++) {
-                if (ls.get(i).getId() == std.getId()) {
-                    idx = i;
-                    break;
+            if (!stdBeforeUpdate.getDaty().isEqual(std.getDaty())) {
+                int idx = 0;
+                StatusDemande nextStd = null, previousStd = null;
+                for (int i = 0; i < ls.size(); i++) {
+                    if (ls.get(i).getId() == std.getId()) {
+                        idx = i;
+                        break;
+                    }
+                }
+                Long duration = 0L;
+                if (idx > 0) {
+                    previousStd = ls.get(idx - 1);
+                    if (previousStd.getDaty().isBefore(std.getDaty())) {
+                        duration = previousStd.getDiff(std);
+                        std.setDT(duration);
+                    }
+                }
+                if (idx < ls.size() - 1) {
+                    nextStd = ls.get(idx + 1);
+                    if (nextStd.getDaty().isAfter(std.getDaty())) {
+                        duration = std.getDiff(nextStd);
+                        nextStd.setDT(duration);
+                        stdserivce.insert(previousStd);
+                    }
                 }
             }
-            Long duration = 0L;
-            if (idx > 0) {
-                previousStd = ls.get(idx - 1);
-                if (previousStd.getDaty().isBefore(std.getDaty())) {
-                    duration = previousStd.getDiff(std);
-                    std.setDT(duration);
-                }
-            }
-            if (idx < ls.size() - 1) {
-                nextStd = ls.get(idx + 1);
-                if (nextStd.getDaty().isAfter(std.getDaty())) {
-                    duration = std.getDiff(nextStd);
-                    nextStd.setDT(duration);
-                    stdserivce.insert(previousStd);
-                }
-            }
+            stdserivce.insert(std);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("ON a un probleme : " + e.getMessage() + " // cause : " + e.getCause().toString());
         }
-        stdserivce.insert(std);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Status demande modifie avec succes");
     }
