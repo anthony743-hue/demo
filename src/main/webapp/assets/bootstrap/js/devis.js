@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputQte = document.getElementById('inputQte');
     const inputPu = document.getElementById('inputPu');
     const addBtn = document.getElementById('addButton');
-    const dmd = document.getElementById('demandeInput');
+    const dm = document.getElementById('demandeInput');
     const form = document.getElementById('formTemp');
     const contextPath = "http://localhost:8080";
 
@@ -16,13 +16,17 @@ document.addEventListener("DOMContentLoaded", () => {
             const res = await fetch(url);
             if (!res.ok) throw new Error("Erreur réseau");
             const demande = await res.json();
-            sessionStorage.setItem("demande", JSON.stringify(demande));
-            form.elements['client'].value = demande.client.nom;
-            form.elements['lieu'].value = demande.commune.nom;
+            return demande;
         } catch (e) { console.error(e); }
     }
-    dmd.addEventListener("input", e => {
-        searchDemandeByRef(e.target.value.trim());
+    async function refreshDemande(e){
+        const demande = await searchDemandeByRef(e.target.value.trim());
+        sessionStorage.setItem("demande", JSON.stringify(demande));
+        form.elements['client'].value = demande.client.nom;
+        form.elements['lieu'].value = demande.commune.nom;
+    }
+    dm.addEventListener("input", e => {
+        refreshDemande(e);
     });
 
     // --- Gestion du sessionStorage ---
@@ -87,8 +91,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const devis = {
             libelle: libelle,
             qte: parseFloat(qte),
-            pu: parseFloat(pu)
+            Pu: parseFloat(pu)
         };
+
+        if(devis.qte <= 0 || devis.Pu <= 0){
+            alert("Veuillez modifier les valeurs de la quantite et du pu");
+            return;
+        }
 
         const arr = getDevisArray();
         arr.push(devis);

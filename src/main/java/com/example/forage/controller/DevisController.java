@@ -64,12 +64,17 @@ public class DevisController {
         }
 
         Map<String, Integer> mp = new HashMap<>();
-        mp.put("DEC", 4);
-        mp.put("DEA", 5);
-        mp.put("DER", 6);
-        mp.put("DFC", 7);
-        mp.put("DFA", 8);
-        mp.put("DFR", 9);
+        mp.put("DEC", 12);
+        mp.put("DEA", 13);
+        mp.put("DER", 14);
+        mp.put("DFC", 15);
+        mp.put("DFA", 16);
+        mp.put("DFR", 17);
+
+        List<DevisDetail> ls = devis.getDetails();
+        for(DevisDetail d : ls){
+            d.setDevis(devis);
+        }
 
         Status s = devis.getDmd().getStatus();
         if(!mp.containsKey(s.getDesignation())){
@@ -81,7 +86,11 @@ public class DevisController {
         devis.setDmd(demande);
         devis.setCreateAt(LocalDate.now());
 
-        devisService.insert(devis);
+        try {
+            devisService.insert(devis);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Erreur rencontre " + e.getMessage());
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Devis créé avec l'ID " + devis.getId());
@@ -97,8 +106,13 @@ public class DevisController {
     }
 
     @GetMapping("/detail")
-    public String getMethodName(@RequestParam String param) {
-        return new String();
+    public ModelAndView getMethodName(@RequestParam String id) {
+        ModelAndView mv = new ModelAndView("layout");
+        Devis devis = devisService.findById(Long.parseLong(id));
+        System.out.println(devis.getDetails().size() + " || w");
+        mv.addObject("liste_detail", devis.getDetails());
+        mv.addObject("contentPage", "/WEB-INF/view/devis/detail.jsp");
+        return mv;
     }
     
 }

@@ -10,4 +10,8 @@ import java.util.List;
 @Repository
 public interface StatusRepository extends JpaRepository<Status, Integer> {
     List<Status> findByDesignationContaining(String designation);
+
+    Status findDistinctBySigleLike(String sigle);
+
+    List<Status> findByDesignationNotContaining(String designation);
 }

@@ -31,4 +31,12 @@ public class StatusService {
     public List<Status> findByDesignationContaining(String s){
         return repo.findByDesignationContaining(s);
     }
+
+    public Status findDistinctBySigleLike(String s){
+        return repo.findDistinctBySigleLike(s);
+    }
+
+    public List<Status> findByDesignationNotContaining(String s){
+        return repo.findByDesignationNotContaining(s);
+    }
 }
