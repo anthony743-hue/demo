@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.forage.models.Demande;
 import com.example.forage.repository.DemandeRepository;
@@ -13,12 +14,22 @@ public class DemandeService {
     @Autowired
     private DemandeRepository repo;
 
+    @Transactional
     public void insert(Demande d){
         repo.save(d);
     }
 
     public void remove(Integer id){
         repo.deleteById(id);
+    }
+
+    @Transactional
+    public void update(Demande demande){
+        Demande newDemande = findById(demande.getId());
+        newDemande.setCommune(demande.getCommune());
+        newDemande.setClient(demande.getClient());
+        newDemande.setReference(demande.getReference());
+        repo.save(newDemande);
     }
 
     public List<Demande> getAll(){

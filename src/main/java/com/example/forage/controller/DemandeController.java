@@ -59,6 +59,7 @@ public class DemandeController {
     public String saveDemande(Demande demande){
         Status target = statusService.findDistinctBySigleLike("DC");
         demande.setStatus(target);
+
         StatusDemande std = new StatusDemande(demande, LocalDateTime.now());
         dmdService.insert(demande);
         stdService.insert(std);
@@ -66,7 +67,7 @@ public class DemandeController {
     }
 
     @GetMapping("/update")
-    public ModelAndView getMethodName(@RequestParam Integer id) {
+    public ModelAndView getPageUpdateDemande(@RequestParam Integer id) {
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/demande/insert.jsp");
         List<Status> lsStatus = statusService.findByDesignationContaining("Demande");
@@ -84,32 +85,16 @@ public class DemandeController {
     }
 
     @PostMapping("/update")
-    public String postMethodName(Demande demande) {
-        StatusDemande std = new StatusDemande(demande, LocalDateTime.now());
-
-        Demande d0 = dmdService.findById(demande.getId());
-        if( d0.getStatus().getId() != demande.getStatus().getId() ){
-            stdService.insert(std);
-        }
-        dmdService.insert(demande);
-
+    public String updateDemande(Demande demande) {
+        dmdService.update(demande);
         return "redirect:/demande/list";
     }
     
     @GetMapping("/list")
-    public ModelAndView getList() {
+    public ModelAndView getListDemande() {
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/demande/list.jsp");
-        List<Demande> ls = dmdService.getAll();
-        mv.addObject("listDemande", ls);
-        return mv;
-    }
-
-    @GetMapping("/detail")
-    public ModelAndView getDetail(@RequestParam Integer id){
-        ModelAndView mv  = new ModelAndView("layout");
-        Demande dmd = dmdService.findById(id);
-        List<StatusDemande> ls = stdService.getByDemande(dmd);
+        mv.addObject("listDemande", dmdService.getAll());
         return mv;
     }
     

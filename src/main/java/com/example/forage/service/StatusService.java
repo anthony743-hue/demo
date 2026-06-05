@@ -22,8 +22,10 @@ public class StatusService {
     public Map<Integer, Status> findAsMap(){
         List<Status> ls = findAll();
         Map<Integer, Status> map = new HashMap<>();
-        for(Status s : ls){
-            map.put(s.getId(), s);
+        Status temp = null;
+        for(int i=0; i < ls.size(); i++){
+            temp = ls.get(i);
+            map.put(temp.getId(), temp);
         }
         return map;
     }

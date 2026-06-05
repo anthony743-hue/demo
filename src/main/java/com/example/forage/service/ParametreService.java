@@ -2,6 +2,7 @@ package com.example.forage.service;
 
 import java.util.List;
 
+import org.apache.jasper.tagplugins.jstl.core.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +16,9 @@ public class ParametreService {
 
     public List<Parametre> getAll(){
         return repo.findAll();
+    }
+
+    public List<Parametre> getOrdered(){
+        return repo.OrderByStatus1();
     }
 }

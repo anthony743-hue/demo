@@ -14,7 +14,7 @@ public class StatusDemande {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idStatus", nullable = false)
     private Status status;
 
