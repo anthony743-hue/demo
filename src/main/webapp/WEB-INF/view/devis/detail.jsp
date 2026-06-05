@@ -1,119 +1,104 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-        <!DOCTYPE html>
-        <html lang="fr">
+        <style>
+            /* Reprise exacte du style des demandes */
+            .actions {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
 
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" href="<c:url value='/assets/bootstrap/css/bootstrap.min.css' />">
-            <style>
-                /* Reprise exacte du style des demandes */
-                .actions {
-                    display: flex;
-                    gap: 8px;
-                    flex-wrap: wrap;
-                    justify-content: flex-end;
-                }
+            .table-card {
+                overflow: hidden;
+                border: 1px solid #black;
+            }
 
-                .table-card {
-                    overflow: hidden;
-                    border: 1px solid #black;
-                }
+            .table-bordered th,
+            .table-bordered td {
+                border-color: #e9ecef;
+            }
 
-                .table-bordered th,
-                .table-bordered td {
-                    border-color: #e9ecef;
-                }
+            thead th {
+                background-color: #f8f9fa;
+                font-weight: 600;
+                color: #1e2a3e;
+                border-bottom-width: 1px;
+            }
 
-                thead th {
-                    background-color: #f8f9fa;
-                    font-weight: 600;
-                    color: #1e2a3e;
-                    border-bottom-width: 1px;
-                }
+            .btn-light {
+                background-color: #f8f9fa;
+                border-color: #dee2e6;
+            }
 
-                .btn-light {
-                    background-color: #f8f9fa;
-                    border-color: #dee2e6;
-                }
+            .btn-light:hover {
+                background-color: #e9ecef;
+            }
 
-                .btn-light:hover {
-                    background-color: #e9ecef;
-                }
+            .btn-sm {
+                border-radius: 0.375rem;
+            }
 
-                .btn-sm {
-                    border-radius: 0.375rem;
-                }
+            .text-end {
+                text-align: right;
+            }
 
-                .text-end {
-                    text-align: right;
-                }
-
-                .container.p-4 {
-                    max-width: 1400px;
-                }
-            </style>
-        </head>
-
-        <body>
-
-            <div class="container p-4">
-                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
-                    <div>
-                        <h1>Liste des details</h1>
-                    </div>
-                    <a class="btn btn-light text-primary fw-semibold" href="<c:url value='/devis/list' />">
-                        Retour
-                    </a>
+            .container.p-4 {
+                max-width: 1400px;
+            }
+        </style>
+        <div class="container p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+                <div>
+                    <h1>Liste des details</h1>
                 </div>
-
-                <div class="table-card">
-                    <div class="table-responsive">
-                        <table class="table table-bordered align-middle mb-0">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th class="" scope="col">Libelle</th>
-                                    <th scope="col">Quantite</th>
-                                    <th class="text-center text-end" scope="col">PU</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${liste_detail}" var="item">
-                                    <tr>
-                                        <td>${item.id}</td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${not empty item.libelle}">
-                                                    ${item.libelle}
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="text-muted">--Non defini--</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                        <td>    
-                                            ${item.qte}
-                                        </td>
-                                        <td class="text-end">
-                                            <c:choose>
-                                                <c:when test="${not empty item.pu}">
-                                                    ${item.pu}
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="text-muted">0</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <a class="btn btn-light text-primary fw-semibold" href="<c:url value='/devis/list' />">
+                    Retour
+                </a>
             </div>
 
-        </body>
-
-        </html>
+            <div class="table-card">
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th class="" scope="col">Libelle</th>
+                                <th scope="col">Quantite</th>
+                                <th class="text-center text-end" scope="col">PU</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${liste_detail}" var="item">
+                                <tr>
+                                    <td>${item.id}</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${not empty item.libelle}">
+                                                ${item.libelle}
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="text-muted">--Non defini--</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                        ${item.qte}
+                                    </td>
+                                    <td class="text-end">
+                                        <c:choose>
+                                            <c:when test="${not empty item.Pu}">
+                                                ${item.Pu}
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="text-muted">0</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>

@@ -100,3 +100,30 @@ Faire l'API:
 
 [ ] Suggestion de Reference	
 [ ] Ajouter un message au dessus du formulaire via un Toast pour confirmer la reussite d'envoie
+
+----
+	
+[ ] Rendre transactionnelle les operations de mise a jour de BDD :
+	[Ok] Ajout de Demande
+	[Ok] Modification de Demande
+	[ ] Ajout de Devis
+	[ ] Ajout de StatusDemande
+	[ ] Modification de StatusDemande
+
+[ ] Faire en anglais et comprehensible le nom des fonctions
+
+[ ] Definir une table type_devis (Etude, Forage)
+	[ ] Creer la table
+	[ ] Modifier la liste de status envoye dans le controller
+	[ ] Lors de l'insertion, mapper le type a (devis "type" cree)
+
+[ ] Pour l'API PHP :
+	[ ] Terminer la gestion du calcul pour savoir si d'un idStatut1 a un idStatut2, un demande est tel alerte
+	[ ] Preparer le filtre par reference
+
+[ ] Modifier la recherche par reference par une liste scrollable de refernce de Demande
+
+[ ] Insertion Demande
+	[ ] Automatiser la generation de Reference
+
+[ ] Melanger les javascript en 1 seul

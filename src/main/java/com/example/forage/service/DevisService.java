@@ -2,6 +2,7 @@ package com.example.forage.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.forage.models.Devis;
 import com.example.forage.repository.DevisRepository;
@@ -12,6 +13,7 @@ public class DevisService {
     @Autowired
     private DevisRepository repo;
 
+    @Transactional
     public void insert(Devis devis){
         repo.save(devis);
     }

@@ -18,12 +18,16 @@ import java.util.List;
 public class Devis {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dev_seq")
-    @SequenceGenerator(name = "dev_seq",sequenceName = "devis_SEQ")
+    @SequenceGenerator(name = "dev_seq", sequenceName = "devis_SEQ")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "IdDmd", nullable = false)
     private Demande dmd;
+
+    @ManyToOne
+    @JoinColumn(name = "IdType", nullable = false)
+    private TypeDevis typeDevis;
 
     private LocalDate createAt;
 
@@ -55,7 +59,7 @@ public class Devis {
     public void setDmd(Demande dmd) {
         this.dmd = dmd;
     }
-    
+
     public List<DevisDetail> getDetails() {
         return details;
     }
@@ -72,10 +76,10 @@ public class Devis {
         this.createAt = createAt;
     }
 
-    public void setCreateAt(String s){
-        if( s == null ){
+    public void setCreateAt(String s) {
+        if (s == null) {
             setCreateAt(LocalDate.now());
-        } else{
+        } else {
             setCreateAt(LocalDate.parse(s));
         }
     }
@@ -83,5 +87,13 @@ public class Devis {
     public void addDetail(DevisDetail detail) {
         detail.setDevis(this);
         details.add(detail);
+    }
+
+    public TypeDevis getTypeDevis() {
+        return typeDevis;
+    }
+
+    public void setTypeDevis(TypeDevis typeDevis) {
+        this.typeDevis = typeDevis;
     }
 }

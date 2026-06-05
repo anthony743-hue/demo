@@ -11,10 +11,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 
 @Entity
+@SequenceGenerator(name = "devis_detail_seq", sequenceName = "devis_detail_SEQ")
 public class DevisDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "devis_detail_seq")
-    @SequenceGenerator(name = "devis_detail_seq", sequenceName = "devis_detail_SEQ")
     private Long id;
 
     @Column(nullable = false, length = 30)
@@ -70,5 +70,9 @@ public class DevisDetail {
             throw new Exception("Veuillez donner une valeur positive pour le prix unitaire");
         }
         this.Pu = pu;
+    }
+
+    public void setPu(String s) throws Exception{
+        setPu(Long.parseLong(s));
     }
 }

@@ -52,11 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
         tr.appendChild(tdQte);
 
         const tdPu = document.createElement('td');
-        tdPu.textContent = devis.pu;
+        tdPu.textContent = devis.Pu;
         tr.appendChild(tdPu);
 
         const tdMontant = document.createElement('td');
-        const montant = (parseFloat(devis.qte) * parseFloat(devis.pu)).toFixed(2);
+        const montant = (parseFloat(devis.qte) * parseFloat(devis.Pu)).toFixed(2);
         tdMontant.textContent = montant;
         tr.appendChild(tdMontant);
 

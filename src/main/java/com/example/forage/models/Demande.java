@@ -14,11 +14,11 @@ public class Demande {
     @JoinColumn(name = "idClient", nullable = false)
     private Client client;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idstatus", nullable = false)
     private Status status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCommune", nullable = false)
     private Commune commune;
 
@@ -64,6 +64,10 @@ public class Demande {
         this.id = id;
     }
     
+    public void setId(String s){
+        setId(Integer.parseInt(s));
+    }
+
     public Status getStatus() {
         return status;
     }
