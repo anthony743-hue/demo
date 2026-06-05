@@ -50,7 +50,7 @@ public class StatusDemandeController {
     @ResponseBody
     public ResponseEntity<?> submitAdd(@RequestBody StatusDemande std) {
         Demande d = dmdsService.findById(std.getDemande().getId());
-        if(d.getStatus().getId() == std.getStatus().getId()){
+        if(d.getStatus().getId() >= std.getStatus().getId()){
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("Envoie impossible, veuillez definir un autre status ");
         }
         d.setStatus(std.getStatus());
