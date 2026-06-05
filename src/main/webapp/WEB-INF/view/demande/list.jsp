@@ -4,7 +4,6 @@
     .actions {
         display: flex;
         gap: 8px;
-        flex-wrap: wrap;
     }
 </style>
 <div class="container p-4">
@@ -23,10 +22,10 @@
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th class="px-5" scope="col">Nom du client</th>
+                        <th class="" scope="col">Nom du client</th>
                         <th scope="col">Statut</th>
                         <th scope="col">Localisation</th>
-                        <th class=" text-center text-end">Actions</th>
+                        <th class=" text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,8 +39,8 @@
                                         <span class="">${item.status.designation}</span>
                                     </td>
                                     <td class=" ">${item.localisation}</td>
-                                    <td class="  text-end">
-                                        <div class="actions justify-content-end">
+                                    <td class="">
+                                        <div class="actions">
                                             <a class="btn btn-sm btn-outline-primary"
                                                 href="<c:url value='/demande/update?id=${item.id}' />">
                                                 Modifier

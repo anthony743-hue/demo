@@ -36,13 +36,18 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="<c:url value='/devis/form' />" class="nav-link">
+                <a href="<c:url value='/devis/list' />" class="nav-link">
                     <i class="bi bi-person"></i> Gestion de devis
                 </a>
             </li>
              <li class="nav-item">
                 <a href="<c:url value='/statusdmd/add' />" class="nav-link">
-                    <i class="bi bi-person"></i> Gestion de statusDemande
+                    <i class="bi bi-person"></i> Ajout de statusDemande
+                </a>
+            </li>
+             <li class="nav-item">
+                <a href="<c:url value='/statusdmd/update' />" class="nav-link">
+                    <i class="bi bi-person"></i> Modification de statusDemande
                 </a>
             </li>
         </ul>

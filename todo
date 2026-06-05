@@ -91,7 +91,12 @@ Type :
 
 [Ok] Tester le calcul de DT *
 [Ok] Corriger si necessaire
-[ ] Faire marcher le bouton pour connaitre les details des Alertes concernant 
+[Ok] Faire marcher le bouton pour connaitre les details des Alertes concernant 
 
-[ ] Afficher la liste de devis
-[ ] Faire marcher le bouton qui mene aux details d'un devis
+[Ok] Afficher la liste de devis
+[Ok] Faire marcher le bouton qui mene aux details d'un devis
+
+Faire l'API:
+
+[ ] Suggestion de Reference	
+[ ] Ajouter un message au dessus du formulaire via un Toast pour confirmer la reussite d'envoie

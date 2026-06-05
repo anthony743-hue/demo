@@ -57,8 +57,8 @@ public class DemandeController {
     
     @PostMapping("/add")
     public String saveDemande(Demande demande){
-        List<Status> lsStatus =  statusService.findByDesignationContaining("Demande");
-        demande.setStatus(lsStatus.get(0));
+        Status target = statusService.findDistinctBySigleLike("DC");
+        demande.setStatus(target);
         StatusDemande std = new StatusDemande(demande, LocalDateTime.now());
         dmdService.insert(demande);
         stdService.insert(std);

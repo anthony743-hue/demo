@@ -19,4 +19,8 @@ public class DevisService {
     public List<Devis> findAll(){
         return repo.findAll();
     }
+
+    public Devis findById(Long id){
+        return repo.findById(id).orElseThrow();
+    }
 }

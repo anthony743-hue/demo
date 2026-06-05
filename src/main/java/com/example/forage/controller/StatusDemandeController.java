@@ -41,7 +41,7 @@ public class StatusDemandeController {
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/statusdmd/add.jsp");
         mv.addObject("script", "std.js");
-        List<Status> status = statusService.findByDesignationContaining("Demande");
+        List<Status> status = statusService.findByDesignationNotContaining("Demande");
         mv.addObject("listeStatus", status);
         return mv;
     }
@@ -65,7 +65,6 @@ public class StatusDemandeController {
 
     @GetMapping("/update")
     public ModelAndView getModifPage() {
-        // List<StatusDemande> ls = stdserivce.getByDemande(reference);
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/statusdmd/modif.jsp");
         mv.addObject("script", "std2.js");
