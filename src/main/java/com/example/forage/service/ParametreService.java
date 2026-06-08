@@ -15,7 +15,7 @@ public class ParametreService {
     private ParametreRepository repo;
 
     public List<Parametre> getAll(){
-        return repo.findAll();
+        return repo.findAllSortedByStatusAndDuree();
     }
 
     public List<Parametre> getOrdered(){

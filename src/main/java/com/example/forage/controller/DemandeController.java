@@ -8,9 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.example.forage.models.Client;
-import com.example.forage.models.Commune;
 import com.example.forage.models.Demande;
 import com.example.forage.models.Status;
 import com.example.forage.models.StatusDemande;
@@ -45,11 +42,8 @@ public class DemandeController {
     public ModelAndView insertDemande(){
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/demande/insert.jsp");
-        List<Commune> lsCommunes = cmService.getAll();
-        List<Client> lsClients = clService.findAll();
-
-        mv.addObject("listeCommune", lsCommunes);
-        mv.addObject("listeClient", lsClients);
+        mv.addObject("listeCommune", cmService.getAll());
+        mv.addObject("listeClient", clService.findAll());
         mv.addObject("path", "add");
         mv.addObject("action", "Enregistrer la demande");
         return mv;
@@ -62,22 +56,20 @@ public class DemandeController {
 
         StatusDemande std = new StatusDemande(demande, LocalDateTime.now());
         dmdService.insert(demande);
-        stdService.insert(std);
+        stdService.save(std);
         return "redirect:/demande/add";
     }
 
     @GetMapping("/update")
     public ModelAndView getPageUpdateDemande(@RequestParam Integer id) {
-        ModelAndView mv = new ModelAndView("layout");
-        mv.addObject("contentPage", "/WEB-INF/view/demande/insert.jsp");
         List<Status> lsStatus = statusService.findByDesignationContaining("Demande");
-        List<Commune> lsCommunes = cmService.getAll();
-        List<Client> lsClients = clService.findAll();
         Demande d = dmdService.findById(id);
 
+        ModelAndView mv = new ModelAndView("layout");
+        mv.addObject("contentPage", "/WEB-INF/view/demande/insert.jsp");
         mv.addObject("listeStatus", lsStatus);
-        mv.addObject("listeCommune", lsCommunes);
-        mv.addObject("listeClient", lsClients);
+        mv.addObject("listeCommune", cmService.getAll());
+        mv.addObject("listeClient", clService.findAll());
         mv.addObject("dmd", d);
         mv.addObject("path", "update");
         mv.addObject("action", "Modifier la demande");

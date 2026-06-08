@@ -23,6 +23,14 @@ public class Status {
         this.sigle = sigle;
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Status s){
+            return s!= null && s.getId() == getId();
+        }
+        return false;
+    }
+
     // Constructors
     public Status() {}
     

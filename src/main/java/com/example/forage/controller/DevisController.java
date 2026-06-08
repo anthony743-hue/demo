@@ -19,11 +19,13 @@ import com.example.forage.models.Devis;
 import com.example.forage.models.DevisDetail;
 import com.example.forage.models.Status;
 import com.example.forage.models.StatusDemande;
+import com.example.forage.models.TypeDevis;
 import com.example.forage.service.ClientService;
 import com.example.forage.service.DemandeService;
 import com.example.forage.service.DevisService;
 import com.example.forage.service.StatusDemandeService;
 import com.example.forage.service.StatusService;
+import com.example.forage.service.TypeDevisService;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,71 +35,51 @@ public class DevisController {
     private DevisService devisService;
     private DemandeService demandeService;
     private StatusService stService;
+    private TypeDevisService typeDevisService;
     private StatusDemandeService statusDemandeService;
 
     public DevisController(DevisService devisService, DemandeService demandeService,
-            StatusService stService, StatusDemandeService std) {
+            StatusService stService, StatusDemandeService std, TypeDevisService typeDevisService) {
         this.devisService = devisService;
         this.demandeService = demandeService;
         this.stService = stService;
         this.statusDemandeService = std;
+        this.typeDevisService = typeDevisService;
     }
 
     @GetMapping("/form")
     public ModelAndView showForm() {
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/devis/add.jsp");
-        mv.addObject("script", "devis.js");
+        mv.addObject("listeStatus", typeDevisService.findAll());
+        mv.addObject("listeDemande", demandeService.getAll());
         return mv;
     }
 
     @PostMapping("/form")
     @ResponseBody
     public ResponseEntity<?> submitForm(@RequestBody Devis devis) {
-        Integer demandeId = devis.getDmd().getId();
-        if (demandeId == null) {
-            return ResponseEntity.badRequest().body("ID de la demande manquant.");
-        }
-
-        Demande demande = demandeService.findById(demandeId);
-        if (demande == null) {
-            return ResponseEntity.badRequest().body("Demande introuvable pour l'ID " + demandeId);
-        }
-
-        StatusDemande stdBeforeUpdate = new Vector<>(statusDemandeService.getByDemande(demande)).lastElement();
-        Map<String, Integer> mp = new HashMap<>();
-        mp.put("DEC", 12);
-        mp.put("DEA", 13);
-        mp.put("DER", 14);
-        mp.put("DFC", 15);
-        mp.put("DFA", 16);
-        mp.put("DFR", 17);
+        String ref = devis.getDmd().getReference();
 
         try {
+            Demande demande = demandeService.findByReference(ref);
+            if (demande == null) {
+                return ResponseEntity.badRequest().body("Demande introuvable pour l'ID " + ref);
+            }
+            TypeDevis t = typeDevisService.findById(devis.getTypeDevis());
+            // if (!mp.containsKey(t.getType())) {
+            // return ResponseEntity.badRequest().body("Status Inconnue : " +
+            // s.getDesignation());
+            // }
+            devis.setTypeDevis(t);
+            Status st = stService.findDistinctBySigleLike("");
+
             List<DevisDetail> ls = devis.getDetails();
             for (DevisDetail d : ls) {
                 d.setDevis(devis);
             }
 
-            Status s = devis.getDmd().getStatus();
-            if (!mp.containsKey(s.getDesignation())) {
-                return ResponseEntity.badRequest().body("Status Inconnue : " + s.getDesignation());
-            }
-            Map<Integer, Status> map = stService.findAsMap();
-            
-            Status s1 = map.get(mp.get(s.getDesignation()));
-
-            LocalDateTime ldt = LocalDateTime.now();
-
-            // StatusDemande std = new StatusDemande();
-            // std.setDaty(ldt);
-            // std.setDemande(demande);
-            // std.setStatus(s1);
-            // std.setDT(stdBeforeUpdate.getDiff(std));
-
             devis.setDmd(demande);
-            devis.setCreateAt(ldt.toLocalDate());
-            
             devisService.insert(devis);
             // statusDemandeService.insert(std);
         } catch (Exception e) {

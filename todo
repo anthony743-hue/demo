@@ -106,14 +106,15 @@ Faire l'API:
 [ ] Rendre transactionnelle les operations de mise a jour de BDD :
 	[Ok] Ajout de Demande
 	[Ok] Modification de Demande
-	[ ] Ajout de Devis
+	[ ] Ajout de Devis ??
+		[ ] Pour le Status Encore inconnue
 	[ ] Ajout de StatusDemande
 	[ ] Modification de StatusDemande
 
-[ ] Faire en anglais et comprehensible le nom des fonctions
+[Ok] Faire en anglais et comprehensible le nom des fonctions
 
-[ ] Definir une table type_devis (Etude, Forage)
-	[ ] Creer la table
+[Ok] Definir une table type_devis (Etude, Forage)
+	[Ok] Creer la table
 	[ ] Modifier la liste de status envoye dans le controller
 	[ ] Lors de l'insertion, mapper le type a (devis "type" cree)
 
@@ -121,9 +122,25 @@ Faire l'API:
 	[ ] Terminer la gestion du calcul pour savoir si d'un idStatut1 a un idStatut2, un demande est tel alerte
 	[ ] Preparer le filtre par reference
 
-[ ] Modifier la recherche par reference par une liste scrollable de refernce de Demande
+[Ok] Modifier la recherche par reference par une liste scrollable de refernce de Demande
 
 [ ] Insertion Demande
 	[ ] Automatiser la generation de Reference
 
 [ ] Melanger les javascript en 1 seul
+
+
+[ ] Ajouter validation de donnees : 
+	[ ] Insertion de devis
+		[ ] Date
+		[ ] Insertion de DevisDetail
+			[ ] Pu > 0
+			[ ] Quantite > 0
+
+[Ok] Corriger la fonction GetDiff
+	
+[Ok] Trier idStatus1, idStatus2 puis par Duree Travaille la liste des parametre
+
+[ ] Prepareer la page pour afficher la listeDesAlertes
+	[ ] Ajouter le javascript qui prends la liste sans filtre au chargement de la page
+	[ ] Ajouter le filtre par reference

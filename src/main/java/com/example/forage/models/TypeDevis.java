@@ -1,10 +1,12 @@
 package com.example.forage.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+@Entity
 public class TypeDevis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +17,10 @@ public class TypeDevis {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(String s){
+        setId(Long.parseLong(s));
     }
 
     public void setId(Long id) {

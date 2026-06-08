@@ -34,7 +34,8 @@
                                         <select name="client" id="client" class="form-select" required>
                                             <option value="">Choisir un client</option>
                                             <c:forEach items="${listeClient}" var="item">
-                                                <option value="${item.id}" <c:if
+                                                <option value="${item.id}"
+                                                 <c:if
                                                     test="${not empty dmd and not empty dmd.client and dmd.client.id == item.id}">
                                                     selected</c:if>>
                                                     ${item.nom} - ${item.contact}
