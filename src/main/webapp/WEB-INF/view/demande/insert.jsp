@@ -183,6 +183,10 @@
                             </div>
 
                             <div class="col-md-6">
+                                        <label for="date" class="form-label">Date</label>
+                                        <input type="datetime-local" name="createAt" class="form-control" id="date">
+                                    </div>
+                            <div class="col-12">
                                 <label class="form-label" for="reference">Reference</label>
                                 <input type="text" name="reference" id="reference" class="form-control"
                                     value="${not empty dmd and not empty dmd.reference ? dmd.reference : ''}">

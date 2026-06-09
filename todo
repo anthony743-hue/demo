@@ -160,3 +160,20 @@ Faire l'API:
 
 	[Ok] Duree total de DT si Forage Terminee en heure
 	[Ok] Modifier en intervalle la duree dans parametre
+
+	Objectif :
+		tout les url passent par le servlet
+
+	Travailler dans 2 espaces de travail
+		- Celui du framework qu'on transformera en Jar
+		- Celui de test ou on appelera les classes du test (application Web)
+
+	Git flow
+		Creer une branche , clone la branche, terminer une fonctionnalite , merger le clone avec l'original puis demander un pull request (qui sera limite jusqu'a une deadline) pour merger avec la branche main
+
+	Fonctionnalite :
+		- Creer un servlet : FrontControllerServlet (qui va passer par toute les requets passant par l'application de test)
+			doGet } 
+			doPost}
+
+	On utilise Tomcat

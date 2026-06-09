@@ -54,7 +54,7 @@ public class DemandeController {
         Status target = statusService.findDistinctBySigleLike("DC");
         demande.setStatus(target);
 
-        StatusDemande std = new StatusDemande(demande, LocalDateTime.now());
+        StatusDemande std = new StatusDemande(demande, demande.getCreateAt());
         dmdService.insert(demande);
         stdService.save(std);
         return "redirect:/demande/add";

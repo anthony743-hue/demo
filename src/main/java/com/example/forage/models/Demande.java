@@ -1,5 +1,9 @@
 package com.example.forage.models;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -24,7 +28,27 @@ public class Demande {
 
     private String reference;
 
-    public Client getClient() {
+    private LocalDateTime createAt;
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
+    }
+
+    public void setCreateAt(String s) {
+        if (s == null) {
+            setCreateAt(LocalDateTime.now());
+        } else {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm[:ss][.SSSSSS]");
+            setCreateAt(LocalDateTime.parse(s, dtf));
+        }
+    }
+
+
+  public Client getClient() {
         return client;
     }
 
