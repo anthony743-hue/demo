@@ -1,8 +1,10 @@
-INSERT INTO Parametre(id_status1,id_status2,duree,alert) VALUES 
+INSERT INTO Parametre(id_status1,id_status2,duree,alerte) VALUES 
 (10,12,350, 'R'),
-(10,12,200,'J'),
-();
+(10,12,200,'J');
 
+
+INSERT INTO Parametre(id_status1,id_status2,duree,alerte) VALUES 
+(13,16,10000,'R');
 
 INSERT INTO type_devis(type) VALUES ('Etude'), ('Forage');
 

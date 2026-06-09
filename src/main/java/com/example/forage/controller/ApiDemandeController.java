@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.forage.entity.ApiResponse;
 import com.example.forage.models.Demande;
@@ -19,6 +19,7 @@ import com.example.forage.service.DemandeService;
 import com.example.forage.service.ParametreService;
 import com.example.forage.service.StatusDemandeService;
 
+@RestController
 @RequestMapping("/apiDemande")
 public class ApiDemandeController {
     private StatusDemandeService statusDemandeService;
@@ -36,6 +37,7 @@ public class ApiDemandeController {
     @ResponseBody
     public ResponseEntity<?> getAlertList() {
         List<Parametre> retour = statusDemandeService.getAlertList(demandeService, paramService);
+        System.out.println(retour.size() + " taille du retour");
         ApiResponse response = new ApiResponse();
         response.setData(retour);
         response.setSuccess(true);
@@ -45,7 +47,6 @@ public class ApiDemandeController {
     @GetMapping("/byref")
     @ResponseBody
     public ResponseEntity<?> getAlertByDemande(@RequestParam String ref){
-        List<Demande> listeDemandes = demandeService.getAll();
         List<Parametre> listParametres = paramService.getAll();
         List<StatusDemande> listStatus = statusDemandeService.getAll();
 

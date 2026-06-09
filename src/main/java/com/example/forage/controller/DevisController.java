@@ -1,10 +1,9 @@
 package com.example.forage.controller;
 
-import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
-import java.util.HashMap;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,9 +17,7 @@ import com.example.forage.models.Demande;
 import com.example.forage.models.Devis;
 import com.example.forage.models.DevisDetail;
 import com.example.forage.models.Status;
-import com.example.forage.models.StatusDemande;
 import com.example.forage.models.TypeDevis;
-import com.example.forage.service.ClientService;
 import com.example.forage.service.DemandeService;
 import com.example.forage.service.DevisService;
 import com.example.forage.service.StatusDemandeService;
@@ -67,10 +64,10 @@ public class DevisController {
                 return ResponseEntity.badRequest().body("Demande introuvable pour l'ID " + ref);
             }
             TypeDevis t = typeDevisService.findById(devis.getTypeDevis());
-            // if (!mp.containsKey(t.getType())) {
-            // return ResponseEntity.badRequest().body("Status Inconnue : " +
-            // s.getDesignation());
-            // }
+            Map<String, Integer> map = new HashMap<>();
+            map.put("etude", 1);
+            map.put("forage",2);
+
             devis.setTypeDevis(t);
             Status st = stService.findDistinctBySigleLike("");
 

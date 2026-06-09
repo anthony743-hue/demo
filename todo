@@ -141,6 +141,13 @@ Faire l'API:
 	
 [Ok] Trier idStatus1, idStatus2 puis par Duree Travaille la liste des parametre
 
-[ ] Prepareer la page pour afficher la listeDesAlertes
-	[ ] Ajouter le javascript qui prends la liste sans filtre au chargement de la page
-	[ ] Ajouter le filtre par reference
+[Ok] Preparer la page pour afficher la listeDesAlertes
+	[Ok] Ajouter le javascript qui prends la liste sans filtre au chargement de la page
+	[Ok] Ajouter le filtre par reference
+
+[ ] Corriger la fonction POST pour l'insertion de devis
+	[ ] Mettre une validation de donnees
+	
+[ ] Corriger la coherence dans les donnees 
+
+[ ] Rendre les heures de travail constants

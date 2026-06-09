@@ -3,10 +3,7 @@ package com.example.forage.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-
-import org.apache.jasper.tagplugins.jstl.core.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +29,9 @@ public class StatusDemandeService {
         Demande d = demandeService.findById(std.getDemande().getId());
 
         StatusDemande stdBeforeUpdate = getLast(d);
+        Status st = std.getStatus();
 
-        if (d.getStatus().getId() >= std.getStatus().getId()) {
+        if (d.getStatus().getId() >= st.getId()) {
             throw new RuntimeException(
                     "Envoie impossible, veuillez entrer definir un Statut Superieur a la precedente");
         }
@@ -42,6 +40,14 @@ public class StatusDemandeService {
                 throw new RuntimeException("Envoie impossible, veuillez definir une date anterieur au dernier status : "
                         + stdBeforeUpdate.getDaty().toString());
             }
+
+            if(st.getDesignation().toLowerCase().matches("devis\\s+forage\\s+.*")){
+                String[] part = st.getDesignation().split(" ");
+                if(part[part.length - 1] != null){
+                    
+                }    
+            }
+            
             Long duration = stdBeforeUpdate.getDiff(std);
             System.out.println("Duration : " + duration);
             std.setDt(duration);
@@ -131,11 +137,6 @@ public class StatusDemandeService {
             st2 = temp.getStatus2();
             j1 = 0;
             j2 = 1;
-            previousStd = listStatus.get(keep.get(j1));
-            nextStd = listStatus.get(keep.get(j2));
-
-            if (previousStd.getStatus() == null || nextStd.getStatus() == null)
-                continue;
 
             while (j2 < n && j1 < j2) {
                 previousStd = listStatus.get(keep.get(j1));
@@ -147,7 +148,7 @@ public class StatusDemandeService {
                 if (!nextStd.getStatus().equals(st2)) {
                     j2++;
                 }
-                if (previousStd.getStatus().equals(st1) && previousStd.getStatus().equals(st2)) {
+                if (previousStd.getStatus().equals(st1) && nextStd.getStatus().equals(st2)) {
                     break;
                 }
             }
@@ -156,7 +157,9 @@ public class StatusDemandeService {
                 s = 0L;
                 for (j = j1; j <= j2; j++) {
                     std = listStatus.get(keep.get(j));
-                    s += std.getDt();
+                    if(std.getDt() != null){
+                        s += std.getDt();
+                    }
                 }
 
                 for (j = 0; j < retour.size(); j++) {
@@ -171,6 +174,7 @@ public class StatusDemandeService {
                         t = retour.get(idx);
                         if(s > t.getDuree()){
                             t.setAlerte(temp.getAlerte());
+                            t.setDuree(s);
                         }
                     } else {
                         t = new Parametre();
