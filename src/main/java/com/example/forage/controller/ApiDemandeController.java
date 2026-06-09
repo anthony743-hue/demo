@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.forage.entity.ApiResponse;
+import com.example.forage.entity.DemandeEntity;
 import com.example.forage.models.Demande;
 import com.example.forage.models.Parametre;
 import com.example.forage.models.StatusDemande;
@@ -24,7 +25,7 @@ import com.example.forage.service.StatusDemandeService;
 public class ApiDemandeController {
     private StatusDemandeService statusDemandeService;
     private ParametreService paramService;
-    private DemandeService demandeService;    
+    private DemandeService demandeService;
 
     public ApiDemandeController(StatusDemandeService statusDemandeService, ParametreService paramService,
             DemandeService demandeService) {
@@ -36,17 +37,52 @@ public class ApiDemandeController {
     @GetMapping("/list")
     @ResponseBody
     public ResponseEntity<?> getAlertList() {
-        List<Parametre> retour = statusDemandeService.getAlertList(demandeService, paramService);
-        System.out.println(retour.size() + " taille du retour");
+        List<DemandeEntity> retour = new ArrayList<>();
+        List<Demande> d = demandeService.getAll();
+        List<StatusDemande> listeStatus = statusDemandeService.getAll();
+        List<Parametre> listeParametres = paramService.getAll();
+        StatusDemande std = null;
+        Demande demande = null;
+        DemandeEntity de = null;
+        Long s = 0L;
+
         ApiResponse response = new ApiResponse();
-        response.setData(retour);
-        response.setSuccess(true);
+        List<Parametre> listeAlerte = null;
+        System.out.println("Nombre de parametres " + listeParametres.size());
+
+        try {
+            for (int i = 0; i < d.size(); i++) {
+                demande = d.get(i);
+                
+                if (demande.getStatus().getSigle().equals("FT")) {
+                    s = 0L;
+                    for (int j = 0; j < listeStatus.size(); j++) {
+                        std = listeStatus.get(j);
+                        if ( std.getDemande().getId() == demande.getId() &&  std.getDt() != null) {
+                            s += std.getDt();
+                        }
+                    }
+                }
+                de = new DemandeEntity(demande);
+                de.setTotalTravaille(s / 60);
+                listeAlerte = statusDemandeService.getAlertByRef(listeStatus, listeParametres, new ArrayList<>(),demande.getId());
+                de.setListeAlerte(listeAlerte);
+                retour.add(de);
+            }
+            response.setData(retour);
+            response.setSuccess(true);
+        } catch (Exception e) {
+            response.setSuccess(false);
+            response.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }        
+       
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 
     @GetMapping("/byref")
     @ResponseBody
-    public ResponseEntity<?> getAlertByDemande(@RequestParam String ref){
+    public ResponseEntity<?> getAlertByDemande(@RequestParam String ref) {
         List<Parametre> listParametres = paramService.getAll();
         List<StatusDemande> listStatus = statusDemandeService.getAll();
 
@@ -60,7 +96,8 @@ public class ApiDemandeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
-        List<Parametre> retour = statusDemandeService.getAlertByRef(listStatus,listParametres,new ArrayList<>(),d.getId());
+        List<Parametre> retour = statusDemandeService.getAlertByRef(listStatus, listParametres, new ArrayList<>(),
+                d.getId());
         response.setData(retour);
         response.setSuccess(true);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);

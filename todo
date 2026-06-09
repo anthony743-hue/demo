@@ -151,3 +151,12 @@ Faire l'API:
 [ ] Corriger la coherence dans les donnees 
 
 [ ] Rendre les heures de travail constants
+
+
+	Devis Etude
+
+	Devis Forage
+
+
+	[Ok] Duree total de DT si Forage Terminee en heure
+	[Ok] Modifier en intervalle la duree dans parametre

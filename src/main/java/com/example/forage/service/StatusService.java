@@ -41,4 +41,8 @@ public class StatusService {
     public List<Status> findByDesignationNotContaining(String s){
         return repo.findByDesignationNotContaining(s);
     }
+
+    public Status findById(int id){
+        return repo.findById(id).get();
+    }
 }

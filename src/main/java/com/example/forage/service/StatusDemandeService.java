@@ -1,7 +1,10 @@
 package com.example.forage.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,8 @@ import com.example.forage.models.Status;
 import com.example.forage.models.StatusDemande;
 import com.example.forage.repository.StatusDemandeRepository;
 
+import jakarta.persistence.RollbackException;
+
 @Service
 public class StatusDemandeService {
     @Autowired
@@ -25,11 +30,17 @@ public class StatusDemandeService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void insert(StatusDemande std, DemandeService demandeService) {
+    public void insert(StatusDemande std, DemandeService demandeService, StatusService statusService) {
         Demande d = demandeService.findById(std.getDemande().getId());
 
+        Map<String, String> map = new HashMap<>();
+        map.put("DFC","DEA");
+        map.put("DFA","DFC");
+        map.put("DEA","DEC");
+        
+
         StatusDemande stdBeforeUpdate = getLast(d);
-        Status st = std.getStatus();
+        Status st = std.getStatus().getSigle() != null ? std.getStatus() :  statusService.findById(std.getStatus().getId());
 
         if (d.getStatus().getId() >= st.getId()) {
             throw new RuntimeException(
@@ -41,15 +52,13 @@ public class StatusDemandeService {
                         + stdBeforeUpdate.getDaty().toString());
             }
 
-            if(st.getDesignation().toLowerCase().matches("devis\\s+forage\\s+.*")){
-                String[] part = st.getDesignation().split(" ");
-                if(part[part.length - 1] != null){
-                    
-                }    
+            for(String  key :map.keySet()){
+                if(st.getSigle().equals(key) && !stdBeforeUpdate.getStatus().getSigle().equals(map.get(key))){
+                    throw new RollbackException("Veuillez d'abord accepter le devis etude");
+                }
             }
             
             Long duration = stdBeforeUpdate.getDiff(std);
-            System.out.println("Duration : " + duration);
             std.setDt(duration);
         }
 
@@ -168,6 +177,9 @@ public class StatusDemandeService {
                         idx = j;
                     }
                 }
+
+                // if( temp.getDuree() == null || temp.getDureeFin() == null )
+                //     continue;
 
                 if (s > temp.getDuree()) {
                     if (idx != -1) {

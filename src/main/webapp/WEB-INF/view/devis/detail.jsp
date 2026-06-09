@@ -63,6 +63,13 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-6">
+                            <c:if test="${not empty errorMsg}">
+                                <div class="alert alert-custom alert-custom-danger" role="alert">
+                                    <span>${errorMsg}</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            </c:if>
                             <div class="table-card">
                                 <div class="table-responsive">
                                     <table class="table table-bordered align-middle mb-0">
@@ -74,33 +81,35 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="${liste_detail}" var="item">
-                                                <tr>
-                                                    <td class="text-begin">
-                                                        <c:choose>
-                                                            <c:when test="${not empty item.libelle}">
-                                                                ${item.libelle}
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span class="text-muted">--Non defini--</span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        ${item.qte}
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <c:choose>
-                                                            <c:when test="${not empty item.pu}">
-                                                                ${item.pu}
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span class="text-muted">0</span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
+                                            <c:if test="${not empty liste_detail}">
+                                                <c:forEach items="${liste_detail}" var="item">
+                                                    <tr>
+                                                        <td class="text-begin">
+                                                            <c:choose>
+                                                                <c:when test="${not empty item.libelle}">
+                                                                    ${item.libelle}
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <span class="text-muted">--Non defini--</span>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            ${item.qte}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <c:choose>
+                                                                <c:when test="${not empty item.pu}">
+                                                                    ${item.pu}
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <span class="text-muted">0</span>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:if>
                                         </tbody>
                                     </table>
                                 </div>

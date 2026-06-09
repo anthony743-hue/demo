@@ -1,6 +1,6 @@
 INSERT INTO Parametre(id_status1,id_status2,duree,alerte) VALUES 
-(10,12,350, 'R'),
-(10,12,200,'J');
+(4,5,350, 'R'),
+(4,5,200,'J');
 
 
 INSERT INTO Parametre(id_status1,id_status2,duree,alerte) VALUES 

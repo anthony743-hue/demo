@@ -52,7 +52,7 @@ public class StatusDemandeController {
     public ModelAndView getAddStatusDemandePage(@ModelAttribute("statusDemande") StatusDemande std) {
         ModelAndView mv = new ModelAndView("layout");
         mv.addObject("contentPage", "/WEB-INF/view/statusdmd/add.jsp");
-        mv.addObject("listeStatus", statusService.findByDesignationContaining("Devis"));
+        mv.addObject("listeStatus", statusService.findAll());
         mv.addObject("listeDemande", dmdsService.getAll());
         return mv;
     }
@@ -66,7 +66,9 @@ public class StatusDemandeController {
             redirsAttrb.addFlashAttribute("errorMsg", "Veuillez corriger les erreurs ci-dessous.");
         } else {
             try {
-                stdserivce.insert(std, dmdsService);
+                // Demande d = dmdsService.findById(std.getDemande().getId());
+                // std.setDemande(d);
+                stdserivce.insert(std, dmdsService, statusService);
                 redirsAttrb.addFlashAttribute("successMsg", "Insertion réussie avec succès");
             } catch (Exception e) {
                 redirsAttrb.addFlashAttribute("errorMsg", "Erreur technique, veuillez réessayer plus tard." + e.getMessage());

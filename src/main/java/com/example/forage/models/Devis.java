@@ -1,6 +1,8 @@
 package com.example.forage.models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,10 +27,10 @@ public class Devis {
     private Demande dmd;
 
     @ManyToOne
-    @JoinColumn(name = "IdType", nullable = false)
+    @JoinColumn(name = "idtype", nullable = false)
     private TypeDevis typeDevis;
 
-    private LocalDate createAt;
+    private LocalDateTime createAt;
 
     private String observation;
 
@@ -67,19 +69,20 @@ public class Devis {
         this.details = details;
     }
 
-    public LocalDate getCreateAt() {
+    public LocalDateTime getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(LocalDate createAt) {
+    public void setCreateAt(LocalDateTime createAt) {
         this.createAt = createAt;
     }
 
     public void setCreateAt(String s) {
         if (s == null) {
-            setCreateAt(LocalDate.now());
+            setCreateAt(LocalDateTime.now());
         } else {
-            setCreateAt(LocalDate.parse(s));
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm[:ss][.SSSSSS]");
+            setCreateAt(LocalDateTime.parse(s, dtf));
         }
     }
 

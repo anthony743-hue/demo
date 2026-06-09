@@ -1,5 +1,6 @@
 package com.example.forage.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.forage.entity.ApiResponse;
 import com.example.forage.models.Demande;
 import com.example.forage.models.Devis;
 import com.example.forage.models.DevisDetail;
 import com.example.forage.models.Status;
+import com.example.forage.models.StatusDemande;
 import com.example.forage.models.TypeDevis;
 import com.example.forage.service.DemandeService;
 import com.example.forage.service.DevisService;
@@ -58,33 +63,69 @@ public class DevisController {
     public ResponseEntity<?> submitForm(@RequestBody Devis devis) {
         String ref = devis.getDmd().getReference();
 
+        ApiResponse response = new ApiResponse();
+        response.setSuccess(false);
+        StatusDemande std = null;
+        Demande demande = null, temp = null;
         try {
-            Demande demande = demandeService.findByReference(ref);
+            demande = demandeService.findByReference(ref);
             if (demande == null) {
+                response.setData(devis);
+                response.setMessage("Demande referencee introuvable : " + ref);
                 return ResponseEntity.badRequest().body("Demande introuvable pour l'ID " + ref);
             }
             TypeDevis t = typeDevisService.findById(devis.getTypeDevis());
-            Map<String, Integer> map = new HashMap<>();
-            map.put("etude", 1);
-            map.put("forage",2);
+            System.out.println(String.format("%d -> %s",devis.getTypeDevis().getId(), devis.getTypeDevis().getType()));
+
+            Status st = demande.getStatus();
+
+            if (t.getType().equalsIgnoreCase("forage")) {
+                if (!st.getSigle().equals("DEA")) {
+                    response.setData(devis);
+                    response.setMessage("Ajout de devis de type forage impossible");
+                    return ResponseEntity.badRequest().body(response);
+                }
+            }
+
+            if (st.getSigle().startsWith("DE") || st.getSigle().startsWith("DF")) {
+                response.setData(devis);
+                response.setMessage("Ajout de devis de type etude impossible : veuillez annuler");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            Map<String, String> map = new HashMap<>();
+            map.put("Etude", "DEC");
+            map.put("Forage", "DFC");
 
             devis.setTypeDevis(t);
-            Status st = stService.findDistinctBySigleLike("");
+            st = stService.findDistinctBySigleLike(map.get(t.getType()));
+            
+            std = new StatusDemande();
+            std.setDaty(devis.getCreateAt());
+            std.setStatus(st);
+
+            temp = new Demande();
+            temp.setId(demande.getId());
+            std.setDemande(temp);
+            devis.setDmd(demande);
 
             List<DevisDetail> ls = devis.getDetails();
             for (DevisDetail d : ls) {
                 d.setDevis(devis);
             }
 
-            devis.setDmd(demande);
-            devisService.insert(devis);
-            // statusDemandeService.insert(std);
+            devisService.insert(devis, std,statusDemandeService,demandeService,stService);
+            response.setMessage("Devis créé avec l'ID " + devis.getId());
+            response.setSuccess(true);
         } catch (Exception e) {
+            e.printStackTrace();
+            response.setSuccess(false);
+            response.setData(devis);
+            response.setMessage(e.getMessage());
             return ResponseEntity.badRequest().body("Erreur rencontre " + e.getMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Devis créé avec l'ID " + devis.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/list")
@@ -96,10 +137,16 @@ public class DevisController {
     }
 
     @GetMapping("/detail")
-    public ModelAndView getMethodName(@RequestParam String id) {
+    public ModelAndView getMethodName(@RequestParam String id, RedirectAttributes redi) {
         ModelAndView mv = new ModelAndView("layout");
-        Devis devis = devisService.findById(Long.parseLong(id));
-        mv.addObject("liste_detail", devis.getDetails());
+        Devis devis = null;
+        try {
+            devis = devisService.findById(Long.parseLong(id));
+            mv.addObject("liste_detail", devis.getDetails());
+        } catch (Exception e) {
+            redi.addFlashAttribute("errorMsg", e.getMessage());
+        }
+
         mv.addObject("contentPage", "/WEB-INF/view/devis/detail.jsp");
         return mv;
     }

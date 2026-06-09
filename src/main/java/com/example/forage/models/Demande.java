@@ -15,7 +15,7 @@ public class Demande {
     private Client client;
     
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idstatus", nullable = false)
+    @JoinColumn(name = "idstatus")
     private Status status;
 
     @ManyToOne(fetch = FetchType.EAGER)

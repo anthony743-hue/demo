@@ -1,15 +1,11 @@
     INSERT INTO Status(designation, sigle) VALUES 
-    ('Demande Cree', 'DC'), 
-    ('Demande Refusee', 'DR'),
-    ('Devis Etude Cree', 'DEC'),
-    ('Devis Etude Accepte', 'DEA'), 
-    ('Devis Etude Refuse', 'DER'),
-    ('Devis Forage Cree','DFC'),
+    ('Dossier cree', 'DC'), 
+    ('Devis Etude Cree', 'DEC'), 
+    ('Devis Etude Acceptee', 'DEA'),
+    ('Devis Forage Cree', 'DFC'),
     ('Devis Forage Acceptee','DFA'),
-    ('Devis Forage Refusee','DFR'),
-    ('Forage Commence', 'FC'), 
-    ('Forage Suspendu', 'FS'), 
-    ('Forage Terminee', 'FT');
+    ('Forage Commence', 'FC'),
+    ('Forage Termine', 'FT');
 
     INSERT INTO parametre (idstatus1, idstatus2, duree, alerte)
     VALUES ()

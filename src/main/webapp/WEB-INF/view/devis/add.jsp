@@ -38,14 +38,14 @@
     <div class="row justify-content-center">
         <div class="col-lg-11 col-xl-10">
             <div class="card anthropic-card">
-                <div class="card-header">
+                <%-- <div class="card-header">
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
                         <div><h1 class="h4 mb-1">${action}</h1></div>
                         <a class="btn-subtle-link" href="<c:url value='/devis/list' />">
                             <i class="bi bi-list-ul me-1"></i> Voir la liste
                         </a>
                     </div>
-                </div>
+                </div> --%>
                 <div class="card-body">
                     <!-- Section Devis -->
                     <div class="row mb-4">
@@ -70,7 +70,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="date" class="form-label">Date</label>
-                                        <input type="date" name="createAt" class="form-control" id="date">
+                                        <input type="datetime-local" name="createAt" class="form-control" id="date">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="lieu" class="form-label">Lieu</label>
@@ -295,6 +295,11 @@
             // Validation de la demande
             if (!demandeRefSelect.value) {
                 alert("Veuillez sélectionner une demande.");
+                return;
+            }
+
+            if(daty === null){
+                alert("Veuille donner la valeur a la date");
                 return;
             }
 
