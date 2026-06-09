@@ -30,15 +30,15 @@ public class StatusDemande {
 
     private Long dt;
 
-    private static final LocalDate LUNDI_REF = LocalDate.of(1900, 1, 1); // un lundi
-
-    public Long getDT() {
+    public Long getDt() {
         return dt;
     }
 
-    public void setDT(Long dT) {
-        this.dt = dT;
+    public void setDt(Long dt) {
+        this.dt = dt;
     }
+
+    private static final LocalDate LUNDI_REF = LocalDate.of(1900, 1, 1); // un lundi
 
     public String getObservation() {
         return observation;
@@ -51,7 +51,7 @@ public class StatusDemande {
     @Override
     public boolean equals(Object o) {
         if (o instanceof StatusDemande s) {
-            boolean a = id == s.id && daty.isEqual(s.getDaty());
+            boolean a = id == s.id && daty != null && s.getDaty() != null && daty.isEqual(s.getDaty());
             boolean b = status.getId() == (s.getStatus().getId()) &&
                     demande.getId() == s.getDemande().getId();
             boolean c = observation != null && s.getObservation() != null && observation.equals(s.getObservation());
@@ -60,13 +60,14 @@ public class StatusDemande {
         return false;
     }
 
-    public Long getDiff(StatusDemande other) {
+   
+public Long getDiff(StatusDemande other) {
         LocalDateTime debut = ajusterDebut(this.daty);
         LocalDateTime fin = ajusterFin(other.getDaty());
 
-        if (debut.isAfter(fin)) {
-            return 0L;
-        }
+        // if (debut.isAfter(fin)) {
+        //     return 0L;
+        // }
 
         LocalDate dateDebut = debut.toLocalDate();
         LocalDate dateFin = fin.toLocalDate();
@@ -91,8 +92,6 @@ public class StatusDemande {
         return minPremierJour + minDernierJour + joursComplets;
     }
 
-    // --- Ajustements sans boucle ---
-
     /**
      * Ramène la date au prochain moment travaillé (>= ldt), sans boucle.
      */
@@ -110,7 +109,6 @@ public class StatusDemande {
         if (time.isBefore(LocalTime.of(8, 0))) {
             return LocalDateTime.of(date, LocalTime.of(8, 0));
         } else if (time.isAfter(LocalTime.of(16, 0))) {
-            // prochain jour ouvré après aujourd'hui
             date = date.plusDays(dow == 5 ? 3 : 1); // vendredi -> +3 (lundi), autre -> +1
             return LocalDateTime.of(date, LocalTime.of(8, 0));
         }
@@ -141,8 +139,6 @@ public class StatusDemande {
         return ldt;
     }
 
-    // --- Calcul du nombre de jours ouvrés (lun-ven) jusqu’à une date (incluse) ---
-
     /**
      * Renvoie le nombre de jours ouvrés entre le lundi de référence (LUNDI_REF)
      * et la date donnée, inclusivement. Formule pure, sans itération.
@@ -153,47 +149,6 @@ public class StatusDemande {
         long reste = joursDepuisRef % 7; // 0 = lundi … 6 = dimanche
         return semaines * 5 + Math.min(reste + 1, 5);
     }
-
-    // public Long getDiff(StatusDemande other){
-    // Long a1 = getDiffMinutes(true);
-    // Long a2 = other.getDiffMinutes(false);
-
-    // Long diffWeek = getDiffInWeek(other);
-    // Long w1 = 0L;
-    // Long w2 = 0L;
-    // if(diffWeek > 0){
-    // w1 = getDiffInDayWeek();
-    // w2 = other.getDiffInDayWeek();
-    // }
-
-    // System.out.println(String.format("Jour S1 %d S2 %d",
-    // daty.getDayOfWeek().getValue(),other.getDaty().getDayOfWeek().getValue()));
-    // System.out.println(String.format("A1 %d A2 %d w1 %d w2 %d W3 %d",
-    // a1,a2,w1,w2,getDiffInWeek(other)));
-    // return a1 + a2 + w1 + w2 + diffWeek;
-    // }
-
-    // private Long getDiffMinutes(boolean before){
-    // long a1 = before ? 960 : 480;
-    // long a2 = daty.getHour() * 60 + daty.getMinute();
-    // long diff = before ? a1 - a2 : a2 - a1;
-    // return Math.max(Math.min(diff,960),0);
-    // }
-
-    // private Long getDiffInWeek(StatusDemande std){
-    // long diffInDay = daty.until(std.getDaty(), ChronoUnit.DAYS);
-    // long diff = 0L;
-    // if( diffInDay > 7 ){
-    // diff = daty.until(std.getDaty(), ChronoUnit.WEEKS) * 2400;
-    // }
-    // return diff;
-    // }
-
-    // private Long getDiffInDayWeek(){
-    // long minutes_day = 480;
-    // return Math.max((5 - (long) (daty.getDayOfWeek().getValue())),0) *
-    // minutes_day;
-    // }
 
     // Constructors
     public StatusDemande() {
